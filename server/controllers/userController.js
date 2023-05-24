@@ -96,7 +96,8 @@ export const login = async (req, res) => {
         if (match) {
             const accessToken = generateAccessToken(
                 foundUser._id,
-                foundUser.role
+                foundUser.role,
+                foundUser?.university
             );
             const refreshToken = generateRefreshToken(foundUser._id);
             await User.findByIdAndUpdate(foundUser._id, { refreshToken });
@@ -134,7 +135,8 @@ export const refreshLogin = async (req, res) => {
                     return res.sendStatus(403);
                 const accessToken = generateAccessToken(
                     decoded.id,
-                    foundUser.role
+                    foundUser.role,
+                    foundUser.university
                 );
                 res.json({ accessToken });
             }
@@ -166,12 +168,13 @@ export const logout = async (req, res) => {
 };
 
 //generate tokens
-const generateAccessToken = (id, role) => {
+const generateAccessToken = (id, role, uni) => {
     return jwt.sign(
         {
             UserInfo: {
                 id,
                 role,
+                uni 
             },
         },
         process.env.ACCESS_TOKEN_SECRET,

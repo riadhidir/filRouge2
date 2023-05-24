@@ -27,7 +27,7 @@ const UniProfile = () => {
     ) : (
         <>
             <div className="flex gap-4 mb-4 ">
-                <div className="  w-[510px] flex-grow flex flex-col p-3 lg:p-6 gap-3  bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700 ">
+                <div className="  w-[524px] flex-grow flex flex-col p-3 lg:p-6 gap-3  bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700 ">
                     <h5 className="mb-2 text-2xl  font-bold tracking-tight text-indigo-700 dark:text-white">
                         {university?.university.name}
                     </h5>
@@ -98,8 +98,8 @@ const UniProfile = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 justify-center">
-                <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <div className="flex flex-col lg:flex-row gap-4 w-full justify-center">
+                <div class="w-full  p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-4">
                         <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
                             Teachers
@@ -229,7 +229,7 @@ const UniProfile = () => {
                         </ul>
                     </div>
                 </div>
-                <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <div class="w-full  p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-4">
                         <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
                             Librarians
@@ -359,7 +359,7 @@ const UniProfile = () => {
                         </ul>
                     </div>
                 </div>
-                <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <div class="w-full  p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-4">
                         <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
                             Documents

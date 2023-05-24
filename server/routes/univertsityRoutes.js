@@ -1,10 +1,10 @@
 import express from 'express';
 import  {acceptUniversity, getUniversities, getUniversity, refuseUniversity, suspendUniversity, updateUniversity } from "../controllers/universityController.js"; 
-import { addField, removeField } from '../controllers/fieldController.js';
+import {  createField, getFields } from '../controllers/fieldController.js';
 import { verifyJWT } from '../middlewares/verifyJWT.js';
-import { addBranch, removeBranch } from '../controllers/branchController.js';
-import { addSpecialty, removeSpecialty } from '../controllers/specialtyController.js';
-import { addCourse, removeCourse } from '../controllers/courseController.js';
+import {  createBranch, getBranches } from '../controllers/branchController.js';
+import {  createSpecialty, getSpecialties } from '../controllers/specialtyController.js';
+import {  createCourse, getCourses } from '../controllers/courseController.js';
 const router = express.Router();
 
 /**
@@ -19,17 +19,27 @@ router.patch('/:universityId/accept',verifyJWT,acceptUniversity);
 router.patch('/:universityId/refuse',verifyJWT,refuseUniversity);
 router.patch('/:universityId/suspend',verifyJWT,suspendUniversity);
 
-router.patch('/:universityId/fields',verifyJWT,addField);
-router.patch('/:universityId/fields/:fieldId',verifyJWT,removeField);
+router.post('/:universityId/fields',createField);
+router.get('/:universityId/fields',verifyJWT,getFields);
+// router.delete('/:universityId/fields',verifyJWT,deleteField);
 
-router.patch('/:universityId/branches',verifyJWT,addBranch);
-router.patch('/:universityId/branches/:branchId',verifyJWT,removeBranch);
+router.post('/:universityId/branches',verifyJWT,createBranch);
+router.get('/:universityId/branches',verifyJWT,getBranches);
+// router.delete('/:universityId/branches',verifyJWT,deleteBranch);
 
-router.patch('/:universityId/specialties',verifyJWT,addSpecialty);
-router.patch('/:universityId/specialties/:specialtyId',verifyJWT,removeSpecialty);
+router.post('/:universityId/specialties',verifyJWT,createSpecialty);
+router.get('/:universityId/specialties',verifyJWT,getSpecialties);
+// router.delete('/:universityId/specialties',verifyJWT,deleteSpecialty);
 
-router.patch('/:universityId/courses',verifyJWT,addCourse);
-router.patch('/:universityId/courses/:courseId',verifyJWT,removeCourse);
+router.post('/:universityId/courses',verifyJWT,createCourse);
+router.get('/:universityId/courses',verifyJWT,getCourses);
+
+
+
+
+// router.get('/:universityId/fields',verifyJWT,getUniversityFields);
+// router.get('/:universityId/fields/:fieldId/branches',verifyJWT,getUniversityBranches);
+// router.patch('/:universityId/branches/:branchId/specialties',verifyJWT,getUniversitySpecialties);
 
 
 // univertyid/fileds/fieldId/branches/branchID/specialties/id

@@ -29,6 +29,18 @@ const courseSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Specialty",
 
+    },
+    university :{
+        type:Schema.Types.ObjectId,
+
+        ref:"University",
+        required:true
+    }
+    , 
+    state:{
+        type:String,
+        enum:['active','disabled'],
+                default : 'active'
     }
 },options);
 const Course = new model('Course', courseSchema);

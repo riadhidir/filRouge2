@@ -8,7 +8,7 @@ import useAuth from "../../hooks/useAuth";
 const Statistics = () => {
 
    const {auth} = useAuth();
-   console.log(auth);
+
   return (
     <>
  

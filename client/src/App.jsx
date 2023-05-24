@@ -8,10 +8,15 @@ import Home from "./pages/Home";
 import RequireAuth from "./components/RequireAuth";
 import roles from "./config/roles.js";
 import Dashboard from "./layouts/Dashboard";
-import Statistics from "./components/University/Statistics";
-import University_Dash from "./components/University/University_Dash";
+import Statistics from "./components/Super_Admin/Statistics";
+import University_Dash from "./components/Super_Admin/University_Dash";
 import PersistentLogin from "./components/PersistentLogin";
-import UniProfile from "./components/University/UniProfile";
+import UniProfile from "./components/Super_Admin/UniProfile";
+import Fields from "./components/University/Fields";
+import Branches from "./components/University/Branches";
+import Specialties from "./components/University/Specialties";
+
+// import Tabs from "./components/University/Tabs";
 const { SUPER_ADMIN, ADMIN, TEACHER, LIBRARIAN, STUDENT } = roles;
 function App() {
     const [count, setCount] = useState(0);
@@ -27,17 +32,13 @@ function App() {
                     }
                 >
                     <Route path="/" element={<Dashboard />}>
-                        <Route path="" element={<Statistics />} />
-                        <Route
-                            path="universities"
-                            element={
-                                <University_Dash />
-                                //  element={< h1>universities</h1>
-                            }
-                        />
+                        <Route path="" element={<Statistics />} /> {/** add data redirection based on role */}
+                        <Route  path="universities" element={ <University_Dash />}/>
+                        <Route path="universities/:universityId" element={<UniProfile/>} />
 
-                            <Route path="universities/:universityId" element={<UniProfile/>}></Route>
-
+                        <Route path="fields" element={<Fields/>}/>
+                        <Route path="branches" element={<Branches/>}/>
+                        <Route path="specialties" element={<Specialties/>}/>
                      
                     </Route>
 

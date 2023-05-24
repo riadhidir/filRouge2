@@ -2,26 +2,38 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import jwt_decode from 'jwt-decode';
 import { useEffect } from "react";
+
 // import 'flowbite';
 const RequireAuth = ({ allowedRoles }) => {
     
     const { auth , setAuth} = useAuth();
     const location = useLocation();
-    
     const decode = auth?.accessToken ?  jwt_decode(auth.accessToken): undefined;
     // console.log(decode);
     // console.log(decode?.UserInfo?.role);
     // console.log(allowedRoles.includes(decode?.UserInfo?.role)); 
     
     const role = decode?.UserInfo?.role || undefined ;
-    const state =  allowedRoles?.includes(role);
+    const uni = decode?.UserInfo?.uni;
+    useEffect(()=>{
+        setAuth(prevAuth =>{
+            return {...prevAuth, role,uni}
+        } )
+        // console.log(uni)
+    },[]);
+    // useEffect(()=>{
+       
+    //     console.log(auth)
+    // },[auth]);
+ 
 
-
+// console.log(decode)
     return (
         
         allowedRoles?.includes(role) 
         ?
          <Outlet/> 
+        // <h1>oylet</h1>
       
         : 
         // <Outlet/>

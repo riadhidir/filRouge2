@@ -10,8 +10,19 @@ const fieldSchema = new Schema({
         required : true,
         unique: true
     },
+    state: {
+        type:String,
+        enum: ['active', 'disabled'],
+        default: 'active'
+    }
+    ,
+    university: {
+        type: Schema.Types.ObjectId,
+        ref: 'University',
+        required:true
+    }
     
 },options);
-const Domain = new model('Field',fieldSchema);
+const Field = new model('Field',fieldSchema);
 
-export default Domain;
+export default Field;
