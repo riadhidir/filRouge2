@@ -1,7 +1,26 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 a.active svg{
     fill:white !important
+} */
+
+@tailwind base;
+
+@layer base {
+  html {    
+    @apply text-neutral-800;
+  }
+  html.dark {
+    @apply text-neutral-50;
+    @apply bg-neutral-800;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
+
+.parent{
+  background-color: white;
 }

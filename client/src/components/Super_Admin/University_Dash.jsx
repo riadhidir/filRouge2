@@ -6,26 +6,42 @@ import Loader from "./Loader.jsx";
 import { useEffect, useState } from "react";
 import Pagination from "../Pagination.jsx";
 import ActionButtons from "./ActionButtons.jsx";
-
+import useNotification from "../../hooks/useNotification.jsx";
 
 const states = {
     active: (
-        <span className={`py-2 px-3 rounded-full font-semibold text-xs text-blue-600 bg-blue-50`}>active</span>
+        <span
+            className={`py-2 px-3 rounded-full font-semibold text-xs text-blue-600 bg-blue-50`}
+        >
+            active
+        </span>
     ),
     pending: (
-        <span className={`py-2 px-3 rounded-full font-semibold text-xs text-pink-600 bg-pink-50`}>Pending</span>
+        <span
+            className={`py-2 px-3 rounded-full font-semibold text-xs text-pink-600 bg-pink-50`}
+        >
+            Pending
+        </span>
     ),
     refused: (
-        <span className={`py-2 px-3 rounded-full font-semibold text-xs text-orange-600 bg-orange-50`}>Archived</span>
+        <span
+            className={`py-2 px-3 rounded-full font-semibold text-xs text-orange-600 bg-orange-50`}
+        >
+            Archived
+        </span>
     ),
     suspended: (
-        <span className={`py-2 px-3 rounded-full font-semibold text-xs text-red-600 bg-red-50`}>Suspended</span>
+        <span
+            className={`py-2 px-3 rounded-full font-semibold text-xs text-red-600 bg-red-50`}
+        >
+            Suspended
+        </span>
     ),
 };
 
 const University_Dash = () => {
     const axiosPrivate = useAxiosPrivate();
-
+    const notify = useNotification();
     const [filter, setFilter] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
@@ -36,9 +52,9 @@ const University_Dash = () => {
         isError,
         error,
         isLoading,
+        isRefetching,
         refetch,
     } = useQuery([page, state], async () => {
-        console.log(search, page, state);
         const response = await axiosPrivate.get(
             `/universities?page=${page}&state=${state}&q=${search}`
         );
@@ -54,9 +70,11 @@ const University_Dash = () => {
         {
             onSuccess: () => {
                 refetch();
+                notify("success");
             },
             onError: (error) => {
                 console.log(error);
+                notify("error");
             },
         }
     );
@@ -67,9 +85,11 @@ const University_Dash = () => {
         {
             onSuccess: () => {
                 refetch();
+                notify("success");
             },
             onError: (error) => {
                 console.log(error);
+                notify("error");
             },
         }
     );
@@ -81,9 +101,11 @@ const University_Dash = () => {
         {
             onSuccess: () => {
                 refetch();
+                notify("success");
             },
             onError: (error) => {
                 console.log(error);
+                notify("error");
             },
         }
     );
@@ -107,7 +129,7 @@ const University_Dash = () => {
     return (
         <>
             <section className="bg-gray-50 dark:bg-gray-900 ">
-                {" "}
+                {/* <ToastContainer /> */}
                 {/*p-3 sm:p-5 */}
                 <div className="mx-auto  ">
                     {" "}
@@ -148,7 +170,7 @@ const University_Dash = () => {
                                             }
                                             id="default-search"
                                             className="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Search Mockups, Logos..."
+                                            placeholder="Search..."
                                         />
                                         <button
                                             type="submit"
@@ -160,75 +182,7 @@ const University_Dash = () => {
                                 </form>
                             </div>
                             <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                {/* <button
-                                    // onClick={()=>setSearchParams({ 'state':'active'})}
-                                    type="button"
-                                    className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                >
-                                    <svg
-                                        className="h-3.5 w-3.5 mr-2"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            clipRule="evenodd"
-                                            fillRule="evenodd"
-                                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                        />
-                                    </svg>
-                                    Add product
-                                </button> */}
-
                                 <div className="flex items-center space-x-3 w-full md:w-auto">
-                                    {/* <button
-                                        id="actionsDropdownButton"
-                                        data-dropdown-toggle="actionsDropdown"
-                                        className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                        type="button"
-                                    >
-                                        <svg
-                                            className="-ml-1 mr-1.5 w-5 h-5"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            />
-                                        </svg>
-                                        Actions
-                                    </button>
-                                    <div
-                                        id="actionsDropdown"
-                                        className="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                                    >
-                                        <ul
-                                            className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="actionsDropdownButton"
-                                        >
-                                            <li>
-                                                <a
-                                                    href="#"
-                                                    className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                >
-                                                    Mass Edit
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <div className="py-1">
-                                            <a
-                                                href="#"
-                                                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                            >
-                                                Delete all
-                                            </a>
-                                        </div>
-                                    </div> */}
                                     <button
                                         id="filterDropdownButton"
                                         onClick={() => setFilter(!filter)}
@@ -296,7 +250,7 @@ const University_Dash = () => {
                                                     htmlFor="all"
                                                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                                                 >
-                                                    All (56)
+                                                    All
                                                 </label>
                                             </li>
                                             {Object.keys(states).map(
@@ -328,7 +282,7 @@ const University_Dash = () => {
                                                                 htmlFor={key}
                                                                 className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                                                             >
-                                                                {key} (56)
+                                                                {key}
                                                             </label>
                                                         </li>
                                                     );
@@ -340,7 +294,6 @@ const University_Dash = () => {
                             </div>
                         </div>
                         <div className="overflow-x-auto">
-                      
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -430,15 +383,6 @@ const University_Dash = () => {
                                                             {item?.accounts}
                                                         </td>
                                                         <td className="px-4 py-3 group">
-                                                            {/* <img
-                                                               
-                                                                className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
-                                                                src="profile-picture-5.jpg"
-                                                                alt=""
-                                                            />
-                                                        <p className=" invisible group-hover:visible">{item?.admin?.email}</p>
-                                                            */}
-
                                                             <div className="flex items-center gap-x-3">
                                                                 <img
                                                                     src="profile-picture-5.jpg"
@@ -494,6 +438,11 @@ const University_Dash = () => {
                                     )}
                                 </tbody>
                             </table>
+                            {!isLoading && !isRefetching && !universities?.universities?.length && (
+                                <div className=" bg-gray-50 h-16 flex justify-center items-center text-gray-600 border bordert-t-black">
+                                    No available data at the moment
+                                </div>  
+                            )}
                         </div>
 
                         <Pagination

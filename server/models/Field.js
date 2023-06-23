@@ -23,6 +23,8 @@ const fieldSchema = new Schema({
     }
     
 },options);
+// Create a compound index on attribute1 and attribute2
+fieldSchema.index({ name: 1, university: 1 }, { unique: true });
 const Field = new model('Field',fieldSchema);
 
 export default Field;

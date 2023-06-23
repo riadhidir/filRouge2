@@ -9,7 +9,7 @@ export const createBranch = async (req, res) => {
 
     const { name, field } = req.body;
     if (!name || !field)
-        return res.status(400).json({ message: "missing field " });
+        return res.status(400).json({ message: "missing field" });
     try { 
       
         const newBranch = await Branch.create({ name, field , university:universityID});
@@ -19,9 +19,10 @@ export const createBranch = async (req, res) => {
         if (err.code === 11000) {
             // Handle the duplicate value error for the unique attribute
             res.status(409).json({
-                message: "Branch already exists",
+                message: "Branch name already exists",
             });
         } else {
+            console.log(err)
             res.status(500).json({ message: err.message });
         }
     }
@@ -48,17 +49,45 @@ export const updateBranch = async (req, res) => {
         );
         res.status(200).json(foundBranch);
     } catch (err) {
-        res.status(500).json({ error: err });
+        if (err.code === 11000) {
+            // Handle the duplicate value error for the unique attribute
+            res.status(409).json({
+                message: "Branch name already exists",
+            });
+        } else {
+            console.log(err)
+            res.status(500).json({ message: err.message });
+        }
+        // res.status(500).json({ error: err });
     }
 };
 export const getBranches = async (req, res) => {
 
     // const field = req.query.field ? {field:req.query.field} : {};
-    const universityID = req.params.universityId;
+    const universityID = req.params.universityId
+    const filter= {university: universityID};
+
+   req.query.q && (filter.name = { $regex: req.query.q, $options: "i" });
+  
+   req.query.field && (filter.field = req.query.field);
+   let sort={}
+   req.query.state && req.query.state != 0  && (sort.state = req.query.state);
+   let { page = 1 } = req.query;
+
+
     try {
-        const branches = await Branch.find({university: universityID}).populate('field','name');
-        const field = await Field.find({university: universityID}, 'name');
-        res.status(200).json({main: branches, filters:{field}});
+         // const count
+         const count = await Branch.countDocuments(filter);
+         const totalPages = Math.ceil(count / 10);
+ 
+         if (page > totalPages) {
+             page = totalPages;
+         }
+ 
+        const branches = await Branch.find(filter).populate('field','name').sort(sort).limit(10).skip(Math.abs((page - 1) * 10));
+        const field = await Field.find({university: universityID,}, 'name');
+        res.status(200).json({main: branches, filters:{field}, totalPages,
+            count});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -69,10 +98,10 @@ export const toggleBranchState = async (req, res) => {
     // const userID = req.user;
 
     const branchID = req.params.branchId;
-
+    const {state} = req.body;
     try {
       
-        const foundBranch = await Branch.findByIdAndUpdate(branchID, {state: this.state === 'active' ? 'disabled' : 'active'});
+        const foundBranch = await Branch.findByIdAndUpdate(branchID, {state});
         if(!foundBranch) return res.sendStatus(404);
         res.sendStatus(200)
     } catch (err) {

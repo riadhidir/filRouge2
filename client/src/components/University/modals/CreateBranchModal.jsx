@@ -2,23 +2,20 @@ import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useMutation } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
+import useNotification from "../../../hooks/useNotification";
 
 export default ({ show, setShow, refetch, fields }) => {
-    // console.log(fields)
+    const notify = useNotification();
     const [field, setField] = useState("");
     const [branch, setBranch] = useState("");
-
     const { auth } = useAuth();
     const [errMsg, setErrMsg] = useState("");
     const university = auth.uni;
     const axiosPrivate = useAxiosPrivate();
-    // useEffect(()=>{
-    // console.log(fields[0]?._id)
-    // },[show]);
 
     useEffect(() => {
         setErrMsg("");
-    }, [branch]);
+    }, [branch, show]);
 
     const createMutation = useMutation(
         (body) => {
@@ -32,12 +29,10 @@ export default ({ show, setShow, refetch, fields }) => {
                 refetch();
                 setBranch("");
                 setShow(false);
+                notify("success");
             },
             onError: (error) => {
                 setErrMsg(error.response.data.message);
-
-                // if(error.response.data?.message)
-                // console.log(error.response.data.message);
             },
         }
     );
@@ -69,10 +64,14 @@ export default ({ show, setShow, refetch, fields }) => {
                                         errMsg ? "block" : "hidden"
                                     } `}
                                 >
-                                    <span className="font-medium">
+                                    <span
+                                        className={`font-medium  ${
+                                            errMsg ? "inline-block" : "hidden"
+                                        } `}
+                                    >
                                         Oh, snapp!
-                                    </span>{" "}
-                                    {errMsg}
+                                    </span>
+                                    {` ${errMsg}`}
                                 </p>
                             </h3>
                             <button
@@ -147,7 +146,7 @@ export default ({ show, setShow, refetch, fields }) => {
                                         id="name"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                                         placeholder="Type product name"
-                                        required=""
+                                        required
                                     />
                                 </div>
                             </div>
@@ -156,15 +155,13 @@ export default ({ show, setShow, refetch, fields }) => {
                                     type="submit"
                                     className="text-white max-w-1/2-lg bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                                 >
-                                    {/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
-                                    Add new product
+                                    Add new branch
                                 </button>
                                 <button
                                     onClick={() => setShow(false)}
                                     type="button"
                                     className="text-white max-w-1/2-lg bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                                 >
-                                    {/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
                                     Dismiss
                                 </button>
                             </div>

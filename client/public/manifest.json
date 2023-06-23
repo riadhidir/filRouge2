@@ -1,0 +1,22 @@
+{
+    "name": "learn compus",
+    "short_name": "learncompus",
+    "description": "",
+    
+    "icons": [
+      {
+        "src": "512x512.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "desk.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/home",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+  }

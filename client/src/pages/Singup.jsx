@@ -170,7 +170,7 @@ const Signup = () => {
                         <div className="flex gap-4">
                             <div>
                                 <label className="font-medium">
-                                    First name{" "}
+                                    First name
                                     <FontAwesomeIcon
                                         icon={faCheck}
                                         className={

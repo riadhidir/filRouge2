@@ -7,10 +7,10 @@ const lowDocsSchema = new Schema({
         type: String,
         required: true
     },
-    link:[{
+    link:{
         type: String,
         required: true
-    }]
+    }
     
 }); 
 

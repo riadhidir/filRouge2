@@ -8,6 +8,6 @@ const router = Express.Router();
 router.delete('/:courseId',verifyJWT, deleteCourse);
 router.patch('/:courseId', verifyJWT,updateCourse);
 // router.get('/', verifyJWT,getCourses);
-router.get('/:courseId', verifyJWT,toggleCourseState);
+router.patch('/:courseId/state', verifyJWT,toggleCourseState);
 
 export default router;

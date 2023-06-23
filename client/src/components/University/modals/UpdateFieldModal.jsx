@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useMutation } from "@tanstack/react-query";
-// import useAuth from "../../../hooks/useAuth";
+import useNotification from "../../../hooks/useNotification";
 
 export default ({ show, setShow, data, refetch }) => {
-    // console.log(data);
     const axiosPrivate = useAxiosPrivate();
     const [field, setField] = useState("");
     const [errMsg, setErrMsg] = useState("");
+    const notify = useNotification();
 
-   
     const updateMutation = useMutation(
         ({ id, name }) => {
             return axiosPrivate.patch(`/fields/${id}`, { name });
@@ -18,13 +17,10 @@ export default ({ show, setShow, data, refetch }) => {
             onSuccess: () => {
                 refetch();
                 setShow({ state: false });
+                notify("success");
             },
             onError: (error) => {
-                if (error.response.data.error) {
-                    setErrMsg("field already exists");
-                } else {
-                    setErrMsg(error.message);
-                }
+                setErrMsg(error.response.data.message);
             },
         }
     );
@@ -60,17 +56,22 @@ export default ({ show, setShow, data, refetch }) => {
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                                 Update Field
                                 <p
-                                    className={`mt-2 ml-2 text-lg lg:inline text-red-600 dark:text-red-500 
-                                    ${errMsg ? "block" : "hidden"} `}
+                                    className={`mt-2 ml-2 text-lg lg:inline text-red-600 dark:text-red-500 ${
+                                        errMsg ? "block" : "hidden"
+                                    } `}
                                 >
-                                    <span className="font-medium">
+                                    <span
+                                        className={`font-medium  ${
+                                            errMsg ? "inline-block" : "hidden"
+                                        } `}
+                                    >
                                         Oh, snapp!
                                     </span>
-                                    {errMsg}
+                                    {` ${errMsg}`}
                                 </p>
                             </h3>
                             <button
-                                onClick={() => setShow({state:false})}
+                                onClick={() => setShow({ state: false })}
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                 data-modal-toggle="defaultModal"
@@ -109,8 +110,8 @@ export default ({ show, setShow, data, refetch }) => {
                                         id="name"
                                         value={field}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                                        placeholder="Type product name"
-                                        required=""
+                                        placeholder="Type field name"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -119,15 +120,13 @@ export default ({ show, setShow, data, refetch }) => {
                                     type="submit"
                                     className="text-white max-w-1/2-lg bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                                 >
-                                    {/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
                                     Save
                                 </button>
                                 <button
-                                    onClick={() => setShow({state:false})}
+                                    onClick={() => setShow({ state: false })}
                                     type="button"
                                     className="text-white max-w-1/2-lg bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                                 >
-                                    {/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
                                     Dismiss
                                 </button>
                             </div>

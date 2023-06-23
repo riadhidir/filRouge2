@@ -14,18 +14,11 @@ import branchRoutes from './routes/branchRoutes.js';
 import specialtyRoutes from './routes/specialtyRoutes.js';
 import courseRoutes from './routes/courseRoutes.js'
 import universityRoutes from './routes/univertsityRoutes.js'
+import teacherDocRoutes from './routes/teacherDocRoutes.js'
+import studentDocRoutes from './routes/studentDocRoutes.js'
+import statisticsRoutes from './routes/statisticsRoutes.js'
+import LibraryRoutes from './routes/libraryRoutes.js'
 
-// import {uploadFile } from './controllers/fileController.js'
-
-
-// import multer from "multer";
-// const upload = multer({ storage:multer.memoryStorage() });
-// const {auth, requiresAuth  } = pkg
-// import cycleRoutes  from "./routes/cycleRoutes.js";
-// import domaineRoutes  from "./routes/domaineRoutes.js";
-// import filiereRoutes  from "./routes/filiereRoutes.js";
-// import specialiteRoutes  from "./routes/specialiteRoutes.js";
-// import moduleRoutes  from "./routes/moduleRoutes.js";
 dotenv.config();
 
 //connect to db
@@ -45,7 +38,7 @@ app.use(cookieParser());
 
 
 //serve static files
-// app.use(Express.static('public'))  uncomment this when a public folder is needed
+app.use(Express.static('/public'))  
 // mongoose.set('strictQuery', false);
 
 // app.post('/files', upload.single('file'), uploadFile);
@@ -56,6 +49,10 @@ app.use('/api/fields',fieldRoutes);
 app.use('/api/branches',branchRoutes);
 app.use('/api/specialties',specialtyRoutes);
 app.use('/api/courses',courseRoutes);
+app.use('/api/documents',teacherDocRoutes);
+app.use('/api/documents',studentDocRoutes);
+app.use('/api/statistics',statisticsRoutes);
+app.use('/api/library',LibraryRoutes);
 mongoose.connection.once('open',()=>{
 app.listen(process.env.PORT, ()=>{console.log(`http://localhost:${process.env.PORT}`)});
 })

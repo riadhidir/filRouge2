@@ -1,0 +1,77 @@
+___functions:
+
+		ord("one-character string") : returns the character's ASCII/UNICODE code point value
+		chr() :  takes a code point and returns its character
+
+		hasattr(classname or objectname , attribute to look for (string)) :  function which is able to safely check if any object/class contains a specified property.
+		getattr(classname or obj , attr to look for) :  get the attr's current value
+		isinstance(value , class name no string) : check the if value is of type int
+		setattr(obj, name, val + 1) : set the property with a new value
+		issubclass(ClassOne, ClassTwo) : checks if a class1 is subclass of class2 (each class is considred to be its subclass) 
+		isinstance(objectName, ClassName) : The functions returns True if the object is an instance of the class, or False otherwise.
+
+		map(function, list):The map() function applies the function passed by its first argument to all its second argument's elements, and returns an iterator delivering all subsequent function results.
+		filter(function , list) : filters its second argument while being guided by directions flowing from the function specified as the first argument The elements which return True from the function pass the filter - the others are rejected.
+
+
+		hex(int) : gives the hexadecimal value of the arg 
+
+
+
+
+
+__Methods:
+		.index("string") :  searches the sequence from the beginning, in order to find the first element of the value specified in its argument.The method returns the index of the first occurrence of the argument (which means that the lowest possible result is 0, while the highest is the length of argument decremented by 1).
+		            Note: the element searched for must occur in the sequence - its absence will cause a ValueError exception.
+		.count("string") : The count() method counts all occurrences of the element inside the sequence. The absence of such elements doesn't cause any problems.
+		.capitalize() : capitalizes the first visible string character and lower casing the rest
+		.center(num ,'one-char-string' ) : centers the string (google it)
+		.endswith("string") :  checks if the given string ends with the specified argument and returns True or Falses
+		.startswith("string") : checks if the given string starts with the specified arg______
+		.find("string" ,#num , #num) : similar to index but safer , returns -1 if the string is not found
+					       The second argument specifies the index at which the search will be started (it doesn't have to fit inside the string).
+					       the third argument points to the first index which won't be taken into consideration during the search 
+		.rfind() : same with the previous but start the search from the end of the string
+		.isalnum() : any string that is not a digit or aletter causes the method to return false
+		.isalpha() : return true when its letters only
+		.isdigit() : return true when its digits only
+		.islower() : return true when all the letters r in lower-case
+		.isupper() : return true when all the letters r in upper-case
+		.isspace() : return true when its white-space only
+		.join("string" or list or tuple _sequence) : all list's elements will be joined into one string with the string which the method has been invoked from
+							     all the list's elements must be string
+		.split() : splits the string and builds a list of all detected substrings.The method assumes that the substrings are delimited by whitespaces 
+			   the spaces don't take part in the operation, and aren't copied into the resulting list
+		.title() : changes every word's first letter to upper-case, turning all other ones to lower-case.
+		.swapcase() : makes a new string by swapping the case of all letters within the source string
+		.upper() : returns an upper caseform of the string
+		.lower() : return a lower case form of the string
+		.lstrip("string" optional) : remove all the leading characters enlisted in its argument
+					     when used whith no argument its removes the leading white-spaces
+		.rstrip("string" optional) : same as lstrip() but affect the opposite side of the sting
+		.strip("string"optional) : combines the effects caused by rstrip() and lstrip()
+		.replace("string1" , "string2" , #num-isoptional) : replaces occurrences of string1 with string 2 , when 3rd argument is used , ht enumber of replacements is limited with it
+		.sort(list) : affects the list
+
+		.__subclasses__() : return  subclasses of a class
+	
+
+
+
+stream_methods/functions:
+			.close() : closes the stream , destroy the stream's objecet
+			.read() : return the content of the file as string
+			.readline() : return a line from the file as string , empty if it raches the end
+
+			.readlines(number) : when invoked without arguments, tries to read all the file contents, and returns a list of strings, one element per file line.can convince the readlines() method to read not more than a specified number of bytes at once (the returning value remains the same - it's a list of a string).
+
+
+
+			.write() : write to the file , expects 1 arg , a string to write , no newline added
+
+
+
+			.readinto(bytearray) : fills the array with content from the file
+
+
+

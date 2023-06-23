@@ -7,7 +7,7 @@ const router = Express.Router();
 
 router.delete('/:branchId',verifyJWT, deleteBranch);
 router.patch('/:branchId', verifyJWT,updateBranch);
-router.patch('/:branchId', verifyJWT,toggleBranchState);
+router.patch('/:branchId/state', verifyJWT,toggleBranchState);
 
 
 export default router;

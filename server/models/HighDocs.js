@@ -13,7 +13,7 @@ const highDocsSchema = new Schema({
     }],
     answers:[{
         type: String,
-        required: true
+        // required: true
     }]
 }); 
 

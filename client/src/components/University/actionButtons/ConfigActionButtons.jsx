@@ -5,35 +5,45 @@ import {
     faTimes,
     faArrowRightRotate,
     faPause,
-    faEdit
+    faEdit,
+    faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from 'react-router-dom';
-const ActionButtons = ({   data , edit }) => {
+const ActionButtons = ({   data , edit ,  toggleState , remove }) => {
     // console.log(data)
     return (
         <>
             <button
-                    onClick={() => edit({state:true, id:data._id, previousValue:data.name, fieldID: data?.field, branchID:data?.branch, specialtyID:data?.special})}
+                    onClick={() => edit({state:true, id:data._id, previousValue:data.name, fieldID: data?.field, branchID:data?.branch, specialtyID:data?.specialty, cycle:data?.cycle})}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 duration-150 bg-indigo-50 rounded-lg hover:bg-indigo-100 active:bg-indigo-200"
                 >
                     <FontAwesomeIcon icon={faEdit} />
                     Edit
                 </button>
+
+                <button
+                    onClick={() => remove(data._id)}
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 duration-150 bg-indigo-50 rounded-lg hover:bg-indigo-100 active:bg-indigo-200"
+                >
+                    <FontAwesomeIcon icon={faTrash} />
+                    Delete
+                </button>
+
             { data.state === "active" ? (
                 <button
-                    onClick={() => suspend(id)}
+                    onClick={() => toggleState({id:data._id,state:'disabled'})}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 duration-150 bg-indigo-50 rounded-lg hover:bg-indigo-100 active:bg-indigo-200"
                 >
                     <FontAwesomeIcon icon={faPause} />
                     disable
                 </button>
-            ) : data.state === "diabled" ? (
+            ) : data.state === "disabled" ? (
                 <button
-                    onClick={() => accept(id)}
+                    onClick={() => toggleState({id:data._id,state:'active'})}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 duration-150 bg-indigo-50 rounded-lg hover:bg-indigo-100 active:bg-indigo-200"
                 >
                     <FontAwesomeIcon icon={faArrowRightRotate} />
-                    reactivate
+                    Enable
                 </button>
             ) : (
                 <></>

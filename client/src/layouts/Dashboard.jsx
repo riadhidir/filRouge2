@@ -10,8 +10,9 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useLogout from "../hooks/useLogout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faBuildingColumns } from "@fortawesome/free-solid-svg-icons";
+import { faBuildingColumns, faUser, faPieChart } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../hooks/useAuth";
+import { ToastContainer } from "react-toastify";
 // import lottie from 'lottie-web';
 // import { defineElement } from 'lord-icon-element';
 // // define "lord-icon" custom element with default properties
@@ -21,18 +22,8 @@ const navLinks = {
     e114: [
         {
             link: "",
-            icon: (
-                <svg
-                    aria-hidden="true"
-                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                </svg>
-            ),
+            icon:<FontAwesomeIcon icon={faPieChart} />,
+            
             text: "Dashboard",
         },
         {
@@ -44,41 +35,44 @@ const navLinks = {
     dcac: [
         {
             link: "",
-            icon: (
-                <svg
-                    aria-hidden="true"
-                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                </svg>
-            ),
+            icon:<FontAwesomeIcon icon={faPieChart} />,
             text: "Dashboard",
         },
         {
-            link: "/universities",
+            link: "/configuration",
             icon: <FontAwesomeIcon icon={faBuildingColumns} />,
-            text: "University",
+            text: "Configuration",
         },
         {
-            link: "/fields",
-            icon: <FontAwesomeIcon icon={faBuildingColumns} />,
-            text: "Fields",
+            link: "/teachers",
+            icon: <FontAwesomeIcon icon={faUser} />,
+            text: "Teachers",
         },
         {
-            link: "/branches",
-            icon: <FontAwesomeIcon icon={faBuildingColumns} />,
-            text: "Branches",
+            link: "/librarians",
+            icon: <FontAwesomeIcon icon={faUser} />,
+            text: "Librarians",
         },
-        {
-            link: "/specialties",
-            icon: <FontAwesomeIcon icon={faBuildingColumns} />,
-            text: "Specialties",
-        },
+       
     ],
+    //teacher
+    '68d0' : [{
+        
+            link: "/teacher",
+            icon: <FontAwesomeIcon icon={faBuildingColumns} />,
+            text: "My Documents",
+        
+
+    }],
+    //Librarian
+    c128: [
+        {
+            link: "/librarian",
+            icon: <FontAwesomeIcon icon={faBuildingColumns} />,
+            text: "My Documents",
+        },
+    ]
+
 
  
    
@@ -94,14 +88,14 @@ const Dashboard = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
     const {
-        data: user,
+        data,
         isError,
         error,
         isLoading,
         refetch,
     } = useQuery([], async () => {
         // console.log('here');
-        const response = await axiosPrivate.get(`/users/profile`);
+        const response = await axiosPrivate.get(`/users/profile/${decode.UserInfo.id}`);
         // console.log(response.data);
 
         return response.data;
@@ -185,13 +179,13 @@ const Dashboard = () => {
                                             className="text-sm text-gray-900 dark:text-white"
                                             role="none"
                                         >
-                                            {`${user?.f_name} ${user?.l_name}`}
+                                            {`${data?.user?.f_name} ${data?.user?.l_name}`}
                                         </p>
                                         <p
                                             className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
                                             role="none"
                                         >
-                                            {user?.email}
+                                            {data?.user.email}
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
@@ -259,7 +253,7 @@ const Dashboard = () => {
                                             isPending
                                                 ? "pending"
                                                 : isActive
-                                                ? "flex items-center p-2  text-white  bg-blue-600 rounded-lg dark:text-white active "
+                                                ? "flex items-center p-2  text-white  bg-indigo-600 rounded-lg dark:text-white active "
                                                 : "flex items-center p-2  text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                         }
                                     >
@@ -277,8 +271,10 @@ const Dashboard = () => {
                 </div>
             </aside>
 
-            <div className="p-4 sm:ml-64 ">
-                <div className=" border-2 bg border-gray-200 border-dashed rounded-lg  dark:border-gray-700 mt-14 ">
+            <div className="p-4 sm:ml-64 bg-gray-50">
+                <div className=" border-0  border-dashed rounded-lg  dark:border-gray-700 mt-14 ">
+            <ToastContainer />
+                   
                     <Outlet />
 
                     {/* <div   className="block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">

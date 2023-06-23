@@ -29,7 +29,8 @@ const userSchema = new Schema({
     },
     university:{
         type : Schema.Types.ObjectId,
-        ref: "University"
+        ref: "University",
+        required:true
         // type:String
     },
     phone:{
@@ -54,7 +55,7 @@ const userSchema = new Schema({
 
 },options);
 userSchema.statics.getUser = async function (userID){
-    const foundUser = await User.findById(userID,'f_name l_name email role');
+    const foundUser = await User.findById(userID,'f_name l_name email role phone university');
     if(!foundUser) throw new CustomError('User not found',404);
     return foundUser;
 }

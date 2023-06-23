@@ -15,6 +15,7 @@ export const verifyJWT = async(req,res,next)=>{
         if(err) return res.sendStatus(403)  //invalid token
         req.user = decoded.UserInfo.id;
         req.role = decoded.UserInfo.role;
+        req.uni = decoded.UserInfo.uni;
         next();
     }
    ))

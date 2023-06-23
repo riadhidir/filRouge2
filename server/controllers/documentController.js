@@ -63,6 +63,7 @@ export const getHighDocs = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 // export const getHighDoc = async (req, res) => {
 //     const
 //     try {
@@ -193,7 +194,7 @@ export const createLowDoc = async (req, res) => {
     }
 };
 
-//get all highdocs or filter by author or by university
+
 export const getLowDocs = async (req, res) => {
     // const filter = req.query.author ? { authors: [req.query.author] } : {};
     const filter = req.query.university

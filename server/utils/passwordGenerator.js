@@ -10,4 +10,4 @@ export const generate = ()=>{
     });
     return password;
 }
-export default generate;
+export default generate; 

@@ -7,7 +7,7 @@ const options= {
 const courseSchema = new Schema({
     name:{
         type : String,
-        unique:true,
+       
         required : true
     },
     cycle: {
@@ -43,5 +43,7 @@ const courseSchema = new Schema({
                 default : 'active'
     }
 },options);
+// Create a compound index on attribute1 and attribute2
+courseSchema.index({ name: 1, university: 1 }, { unique: true });
 const Course = new model('Course', courseSchema);
 export default Course;

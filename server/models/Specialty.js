@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Course from "./Course.js";
 const {Schema, model} = mongoose;
 
 const options= {
@@ -8,7 +9,7 @@ const specialtySchema = new Schema({
     name:{
         type:String,
         required:true,
-        unique:true
+     
     },
     // domain: {
     //     type: Schema.Types.ObjectId,
@@ -32,5 +33,15 @@ const specialtySchema = new Schema({
         required:true
     }
 },options);
-const Specialty = new model('Specialty', specialtySchema);
+
+// Create a compound index on attribute1 and attribute2
+specialtySchema.index({ name: 1, university: 1 }, { unique: true });
+specialtySchema.pre('findOneAndDelete', { document: true, query: false }, async function(next){
+    console.log('2')
+    await Course.deleteMany({specialty: this._id });
+    // console.log('gg')
+    next();
+});
+
+const Specialty = model('Specialty', specialtySchema);
 export default Specialty;

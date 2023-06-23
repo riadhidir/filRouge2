@@ -28,7 +28,7 @@ const universitySchema = new Schema(
             type: Number,
             default: 50,
         },
-        // fields: [
+        // fields: 
         //     {
         //         field: {
         //             type: Schema.Types.ObjectId,
@@ -41,7 +41,7 @@ const universitySchema = new Schema(
         //             default: "active",
         //         },
         //     },
-        // ],
+        // ,
         // branches: [{
 
         //     branch: {

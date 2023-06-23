@@ -8,12 +8,12 @@ import useAuth from "../hooks/useAuth";
 
 const Login = () => {
     const { auth, setAuth } = useAuth();
-
+ 
     const navigate = useNavigate();
     const location = useLocation();
-
+    
     const from = location.state?.from?.pathname || "/";
-
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errMsg, setErrMsg] = useState("");
@@ -42,7 +42,11 @@ const Login = () => {
         });
         // console.log(email, password);
     };
-    return (
+    useEffect(()=>{
+        auth== null && navigate('/');
+    
+    },[auth]);
+    return  (
         <main className="w-full h-screen flex flex-col items-center justify-center px-4">
             <div className="max-w-sm w-full text-gray-600">
                 <div className="text-center">
@@ -149,7 +153,7 @@ const Login = () => {
                         Sign in
                     </button>
                     <div className="text-center">
-                        <Link to={"/daz"} className="hover:text-indigo-600">
+                        <Link to={"/reset-password"} className="hover:text-indigo-600">
                             Forgot password?
                         </Link>
                     </div>

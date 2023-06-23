@@ -5,6 +5,8 @@ import { verifyJWT } from '../middlewares/verifyJWT.js';
 import {  createBranch, getBranches } from '../controllers/branchController.js';
 import {  createSpecialty, getSpecialties } from '../controllers/specialtyController.js';
 import {  createCourse, getCourses } from '../controllers/courseController.js';
+import { getLibrarians, getTeachers } from '../controllers/userController.js';
+// import { createHighDoc, getHighDocs } from '../controllers/highDocumentController.js';
 const router = express.Router();
 
 /**
@@ -36,6 +38,13 @@ router.get('/:universityId/courses',verifyJWT,getCourses);
 
 
 
+
+router.get('/:universityId/teachers',verifyJWT,getTeachers);
+router.get('/:universityId/librarians',verifyJWT,getLibrarians);
+
+
+// router.post('/:universityId/highDocuments', verifyJWT, createHighDoc);
+// router.get('/:universityId/highDocuments', verifyJWT, getHighDocs);
 
 // router.get('/:universityId/fields',verifyJWT,getUniversityFields);
 // router.get('/:universityId/fields/:fieldId/branches',verifyJWT,getUniversityBranches);

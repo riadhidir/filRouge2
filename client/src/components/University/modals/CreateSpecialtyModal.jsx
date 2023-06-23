@@ -2,26 +2,21 @@ import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useMutation } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
+import useNotification from "../../../hooks/useNotification";
 
-export default ({ show, setShow, refetch , branches}) => {
-    // console.log(branches)
-    // console.log(fields)
-    // const [field, setField] = useState("");
+export default ({ show, setShow, refetch ,fields,  branches}) => {
+    const notify = useNotification();
+    const [field, setField] = useState("");
     const [branch, setBranch] = useState("");
     const [specialty, setSpecialty] = useState("");
-
     const { auth } = useAuth();
     const [errMsg, setErrMsg] = useState("");
     const university = auth.uni;
     const axiosPrivate = useAxiosPrivate();
-    // useEffect(()=>{
-    // console.log(fields[0]?._id)
-    // },[show]);
 
     useEffect(() => {
         setErrMsg("");
-    }, [specialty]);
-
+    }, [specialty, show]);
 
     const createMutation = useMutation(
         (body) => {
@@ -35,12 +30,10 @@ export default ({ show, setShow, refetch , branches}) => {
                 refetch();
                 setSpecialty("");
                 setShow(false);
+                notify('success');
             },
             onError: (error) => {
                 setErrMsg(error.response.data.message);
-
-                // if(error.response.data?.message)
-                // console.log(error.response.data.message);
             },
         }
     );
@@ -66,16 +59,20 @@ export default ({ show, setShow, refetch , branches}) => {
                         {/* <!-- Modal header --> */}
                         <div className=" flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white ">
-                                Add Branch
+                                Add Specialty
                                 <p
                                     className={`mt-2 ml-2 text-lg lg:inline text-red-600 dark:text-red-500 ${
                                         errMsg ? "block" : "hidden"
                                     } `}
                                 >
-                                    <span className="font-medium">
+                                    <span
+                                        className={`font-medium  ${
+                                            errMsg ? "inline-block" : "hidden"
+                                        } `}
+                                    >
                                         Oh, snapp!
                                     </span>
-                                    {errMsg}
+                                    {` ${errMsg}`}
                                 </p>
                             </h3>
                             <button
@@ -103,7 +100,42 @@ export default ({ show, setShow, refetch , branches}) => {
                         {/* <!-- Modal body --> */}
                         <form onSubmit={handleCreator}>
                             <div className="grid gap-4 mb-4 ">
-                              
+                            <div>
+                                    <label
+                                        htmlFor="category"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Field
+                                    </label>
+                                    
+                                    <select
+                                        id="category"
+                                        value={field}
+
+                                        onChange={(e) =>{
+                                             setField(e.target.value)
+                                             setBranch((prev)=>{return {...prev}})
+
+                                        }
+                                           
+                                        }
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    >
+                                        <option disabled value="">
+                                            select a Field
+                                        </option>
+                                        {fields?.map((item, idx) => {
+                                            return (
+                                                <option
+                                                    key={idx+1}
+                                                    value={item._id}
+                                                >
+                                                    {item.name}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
                                 <div>
                                     <label
                                         htmlFor="category"
@@ -121,17 +153,19 @@ export default ({ show, setShow, refetch , branches}) => {
                                         }
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     >
-                                        <option disabled value="">
+                                        <option  value="">
                                             select a Branch
                                         </option>
                                         {branches?.map((item, idx) => {
+                                            // console.log(item)
                                             return (
+                                                item.field == field ? 
                                                 <option
-                                                    key={idx}
+                                                    key={idx+2}
                                                     value={item._id}
                                                 >
                                                     {item.name}
-                                                </option>
+                                                </option>: <></>
                                             );
                                         })}
                                     </select>
@@ -152,8 +186,8 @@ export default ({ show, setShow, refetch , branches}) => {
                                         name="name"
                                         id="name"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                                        placeholder="Type product name"
-                                        required=""
+                                        placeholder="Type specialty name"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -162,7 +196,6 @@ export default ({ show, setShow, refetch , branches}) => {
                                     type="submit"
                                     className="text-white max-w-1/2-lg bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                                 >
-                                    {/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
                                     Add new Specialty
                                 </button>
                                 <button
@@ -170,7 +203,6 @@ export default ({ show, setShow, refetch , branches}) => {
                                     type="button"
                                     className="text-white max-w-1/2-lg bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                                 >
-                                    {/* <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg> */}
                                     Dismiss
                                 </button>
                             </div>

@@ -29,6 +29,7 @@ const branchSchema = new Schema({
 
     }
 },options);
-
+// Create a compound index on attribute1 and attribute2
+branchSchema.index({ name: 1, university: 1 }, { unique: true });
 const Branch = new model('Branch',branchSchema);
 export default Branch;

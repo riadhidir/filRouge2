@@ -16,7 +16,7 @@ export const createField = async (req, res) => {
         if (err.code === 11000) {
             // Handle the duplicate value error for the unique attribute
             res.status(409).json({
-                message: "field already exists",
+                message: "field name already exists",
             });
             
         } else {
@@ -38,14 +38,41 @@ export const updateField = async (req, res) => {
         );
         res.status(200).json(foundField);
     } catch (err) {
-        res.status(500).json({ error: err });
+        if (err.code === 11000) {
+            // Handle the duplicate value error for the unique attribute
+            res.status(409).json({
+                message: "field name already exists",
+            });
+            
+        } else {
+            res.status(500).json({ message: err.message });
+        }
     }
 };
 export const getFields = async (req, res) => {
-    const univeristyID = req.params.universityId
+    const universityID = req.params.universityId
+     const filter= {university: universityID};
+
+    req.query.q && (filter.name = { $regex: req.query.q, $options: "i" });
+    let sort={}
+    req.query.state && req.query.state != 0  && (sort.state = req.query.state);
+
+    // req.query.state && (filter.state = req.query.state);
+   const {state=0} = req.query;
+   let { page = 1 } = req.query;
+
     try {
-        const fields = await Field.find({university: univeristyID});
-        res.status(200).json({main:fields});
+           // const count
+           const count = await Field.countDocuments(filter);
+           const totalPages = Math.ceil(count / 10);
+   
+           if (page > totalPages) {
+               page = totalPages;
+           }
+   
+        const fields = await Field.find(filter).sort(sort).limit(10).skip(Math.abs((page - 1) * 10));
+
+        res.status(200).json({main:fields,totalPages,count});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -91,18 +118,21 @@ export const ToggleFieldState = async (req, res) => {
     // const userID = req.user;
     // const universityID = req.params.universityId;
     
-    const fieldID = req.params.fieldId;
+    const fieldID =  req.params.fieldId;
+    const {state} = req.body;
+   
 
     try {
 
         // const foundUniversity = await University.findByIdAndUpdate(universityID, {$pull: {fields: {field:fieldID, state:'active'}}});
 
-        const foundField = await Field.findByIdAndUpdate(fieldID, {state: this.state === 'active' ? 'disabled' : 'active'});
+        const foundField = await Field.findByIdAndUpdate(fieldID, {state});
         // const foundUniversity = await University.findById(universityID);
         if (!foundField) return res.sendStatus(400);
      
         res.sendStatus(200)
     } catch (err) {
+        console.log(err)
         res.status(500).json({ message: err.message });
     }
 };

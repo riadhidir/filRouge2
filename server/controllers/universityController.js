@@ -2,6 +2,7 @@ import University from "../models/University.js";
 import User from "../models/User.js";
 import Document from "../models/Documents.js";
 import roles from "../../client/src/config/roles.js";
+import sendEmail from "../utils/email.js";
 export const getUniversity = async (req, res) => {
     const universityID = req.params.universityId;
     try {
@@ -93,7 +94,6 @@ export const acceptUniversity = async (req, res) => {
             { state: "active" },
             { returnDocument: "after" }
         );
-        console.log(foundUni);
         if (!foundUni)
             return res.status(404).json({ message: "invalid university ID" });
         const uniAdmin = await User.findOneAndUpdate(
@@ -103,7 +103,7 @@ export const acceptUniversity = async (req, res) => {
 
         //hadle admin not found
         if (!uniAdmin)
-            return res.status(404).json({ message: " admin not found" });
+            return res.status(404).json({ message: "admin not found" });
 
         sendEmail(uniAdmin.email, `your submission has been accepted`);
 

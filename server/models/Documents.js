@@ -2,24 +2,25 @@ import mongoose from "mongoose";
 
 import CustomError from "../utils/Error.js";
 //destructure roles
-
-const {Schema, model} = mongoose;
-
 const options= {
+    discriminatorKey :"type",
     timestamps:true 
 }
+const {Schema, model} = mongoose;
+
+
 const documentSchema = new Schema({
     title:{
         type: String,
         required: true
     },
-    
+   
     authors:[{
-        type: Schema.Types.Mixed,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }],
     university:{
-        type : Schema.Types.ObjectId,
+        type :Schema.Types.ObjectId,
         ref: "University"
 
     },
@@ -30,19 +31,29 @@ const documentSchema = new Schema({
     },
     language: {
         type:String,
-        required:true
+        enum:["fr",'en'],
+        default:'fr',
+        required: true
+
     },
-   type: {
+    description: {
     type: String,
-    enum:['tp','td','memoire','these','examen'],
-    required:true
-   },
+    },
    state: {
     type :String, 
     enum: ['active','archived'],
     default : 'active'
+   },
+   downloads : {
+    type : Number,
+    default:0
+   },
+   ratings : {
+    type: Number,
+    default:5,
+    max:5,
+    min: 0
    }
-   
 
  
 },options);
