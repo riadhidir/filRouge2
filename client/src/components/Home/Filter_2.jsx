@@ -5,7 +5,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 
-const Filter = ({ title, show = false, setAction , field="", branch="", specialty="",_default="",data, checkRef}) => {
+const Filter = ({ title, show = false, setAction , field="", branch="", specialty="",_default="",data, checkRef,className=""}) => {
     useEffect(() => {
         initTE({ Collapse });
         // console.log(data)
@@ -21,7 +21,7 @@ const Filter = ({ title, show = false, setAction , field="", branch="", specialt
     return (
         <div
             id={`${title.split(' ').join('')}-accordion`}
-            className=" px-8 py-7 text-sm font-medium text-gray-900 bg-white/50 border-2 border-white rounded-lg dark:bg-gray-700 dark:border-gray-600 h-fit dark:text-white  "
+            className={`px-8 py-7 text-sm font-medium text-gray-900 bg-white/50 border-2 border-indigo-500 lg:border-white rounded-lg dark:bg-gray-700 dark:border-gray-600 h-fit dark:text-white ${className}  `}
         >
             <button
                 id={title.split(' ').join('')}
@@ -91,8 +91,11 @@ const Filter = ({ title, show = false, setAction , field="", branch="", specialt
                 </div>
         )
     })
+
+    
 }
-<p className="hidden first:block">fzef</p>
+
+
 
                
             </div>

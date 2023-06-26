@@ -38,7 +38,7 @@ const filters = {
     fields: [],
     branches: ["field"],
     specialties: ["branch"],
-    courses: ["specialty"],
+    courses: ["field","branch","specialty"],
 };
 
 const states = {
@@ -185,11 +185,7 @@ const Fields = () => {
 
     return (
         <>
-            <Tabs
-                tabItems={tabItems}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-            />
+        
             {
                 // config[selectedItem].modals[0]
                 selectedItem === "fields" ? (
@@ -262,12 +258,19 @@ const Fields = () => {
                     </>
                 ) : (
                     <></>
-                )
-            }
+                    )
+                }
 
             <section className="bg-gray-50 dark:bg-gray-900 ">
+            <h2 className="text-4xl my-20 mb-5">Configuration</h2>
+                
                 <div className="mx-auto   ">
                     <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg ">
+                                    <Tabs
+                                        tabItems={tabItems}
+                                        selectedItem={selectedItem}
+                                        setSelectedItem={setSelectedItem}
+                                    />
                         <div className="flex flex-col  md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                             <div className="w-full md:w-1/2">
                                 <form onSubmit={handleSearch}>
@@ -340,7 +343,7 @@ const Fields = () => {
                             </div>
                         </div>
                         <div className="px-8 py-2 flex  gap-3 flex-col lg:flex-row lg:gap-14 justify-end">
-                            {Boolean(data?.main?.length) &&
+                            {
                                 filters[selectedItem]?.map((item, idx) => {
                                     return (
                                         <Filter

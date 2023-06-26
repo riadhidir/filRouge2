@@ -300,7 +300,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
                             <div
                                 className={`${
                                     modalIndex == 3 ? "block" : "hidden"
-                                } w-full flex flex-col gap-2 h-96 justify-around   `}
+                                } w-full flex flex-col gap-2 h-fit justify-around   `}
                             >
                                 <div className="">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -381,7 +381,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 justify-between mt-0  ">
+                            <div className="flex gap-4 justify-between mt-5  ">
                                 <button
                                     type="button"
                                     onClick={() =>

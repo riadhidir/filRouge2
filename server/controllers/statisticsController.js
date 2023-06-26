@@ -7,8 +7,20 @@ import Document from '../models/Documents.js';
 import Course from '../models/Course.js';
 export const universitiesStats = async(req,res)=>{
     try {
+
         const filter = {};
         req.params.universityId && (filter.university = req.params.universityId)
+        const downloadFilter = req.params.universityId
+        ? { $group: {
+            _id:  '$university',
+            totalDownloads: { $sum: '$downloads' },
+          }, } // Include $match stage if filterUniversity is provided
+        : {
+            $group: {
+                _id:  null,
+                totalDownloads: { $sum: '$downloads' },
+              }
+        };
         // const uni = await University.aggregate([
         //     { 
         //         $group: {_id : "$state",
@@ -31,6 +43,12 @@ export const universitiesStats = async(req,res)=>{
         const branches = await Branch.countDocuments(filter);
         const specialties = await Specialty.countDocuments(filter);
         const courses = await Course.countDocuments(filter);
+        const downloads_Count = await Document.aggregate([
+           
+             
+               downloadFilter
+            
+          ]);
         res.status(200).json({
             Universities:{
                 states:university_State,
@@ -45,7 +63,9 @@ export const universitiesStats = async(req,res)=>{
            Documents:{
             // states:documents_State,
             types: documents_Type,
-            count: documents_Count
+            count: documents_Count,
+            downloads : downloads_Count
+
            },
            Fields:{
             count:fields
@@ -55,7 +75,7 @@ export const universitiesStats = async(req,res)=>{
            },
            Specialties:{count:specialties},
            Courses:{count:courses},
-           filter
+
         })
         
     } catch (err) {

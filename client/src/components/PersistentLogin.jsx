@@ -8,11 +8,11 @@ import Loader from "./Loader";
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const { auth, persist } = useAuth();
-
+    // const { auth, persist } = useAuth();
+    const { auth } = useAuth();
+    // const {userId, userRole, userUni} = useUserCredentials();
     useEffect(() => {
         let isMounted = true;
-
         const verifyRefreshToken = async () => {
             try {
                 await refresh();
@@ -24,13 +24,15 @@ const PersistLogin = () => {
                 isMounted && setIsLoading(false);
             }
         }
-
+        // console.log(auth?.role)
         // persist added here AFTER tutorial video
         // Avoids unwanted call to verifyRefreshToken
-        !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
-
+        // !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
+        !auth?.accessToken  ? verifyRefreshToken() : setIsLoading(false);
         return () => isMounted = false;
-    }, [])
+    }, []);
+
+
 
     // useEffect(() => {
     //     // console.log(`isLoading: ${isLoading}`)
@@ -41,9 +43,10 @@ const PersistLogin = () => {
         <>
                  {/* <Outlet /> */}
 
-            {!persist
-                ? <Outlet />
-                : isLoading
+            {
+            // !persist
+            //     ? <Outlet />
+                isLoading
                     ? <Loader/>
                     : <Outlet />
             }

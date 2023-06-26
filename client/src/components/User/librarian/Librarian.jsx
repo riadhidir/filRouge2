@@ -142,6 +142,7 @@ function Teacher() {
                     type,
                     cycle,
                 }}
+                refetch={refetch}
             />
             <UpdateModal
                 show={updateModal.state}

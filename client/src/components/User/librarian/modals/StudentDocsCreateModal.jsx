@@ -27,7 +27,7 @@ const _language = [
     { _id: "en", name: "English" },
 ];
 
-const StudentDocsCreateModal = ({ show, setShow, data }) => {
+const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
     const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const university = auth.uni;
@@ -98,8 +98,9 @@ const StudentDocsCreateModal = ({ show, setShow, data }) => {
                 console.log("success");
                 alert("upload success");
                 setModalIndex(1);
+                refetch()
 
-                setShow(false);
+                // setShow(false);
             },
             onError: (error) => {
                 console.log(error);
@@ -277,7 +278,7 @@ const StudentDocsCreateModal = ({ show, setShow, data }) => {
                             <div
                                 className={`${
                                     modalIndex == 3 ? "block" : "hidden"
-                                } w-full flex flex-col gap-2 h-96 justify-start   `}
+                                } w-full flex flex-col gap-2 h-fit justify-start   `}
                             >
                                 <div className="">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -360,7 +361,7 @@ const StudentDocsCreateModal = ({ show, setShow, data }) => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 justify-between mt-0  ">
+                            <div className="flex gap-4 justify-between mt-5  ">
                                 <button
                                     type="button"
                                     onClick={() =>

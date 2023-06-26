@@ -31,7 +31,8 @@ const states_colors = {
     },
     uni: {
         active: "#475BE8",
-        pending: "#e2e8f0",
+        // pending: "#e2e8f0",
+        suspended: "#e2e8f0",
     },
 };
 const document_types_colors = {
@@ -47,56 +48,7 @@ const Statistics = () => {
         defineElement(lottie.loadAnimation);
     }, []);
 
-    const [menuItems, setMenuItems] = useState(null);
-    //  const menuItems = [
-    //      "Products",
-    //      "Documentation",
-    //      "Features",
-    //      "Partners",
-    //      "Industry",
-    //      "Feedback",
-    //      "Tech stack",
-    //  ];
 
-    const [selectedItem, setSelectedItem] = useState({
-        item: "",
-        idx: null,
-    });
-
-    const [state, setState] = useState(false);
-    const [searchFieldVal, setSearchFieldVal] = useState("");
-
-    const listboxRef = useRef();
-
-    const handleSearch = (e) => {
-        const menuEls = document.querySelectorAll(".menu-el-js");
-        const searchVal = e.target.value.toLocaleLowerCase();
-        const alrtEl = document.getElementById("li-alert");
-        setSearchFieldVal(e.target.value);
-        const handleAlert = () => {
-            if (listboxRef.current && listboxRef.current.offsetHeight < 5)
-                alrtEl.classList.remove("hidden");
-            else alrtEl.classList.add("hidden");
-        };
-        handleAlert();
-        setTimeout(() => handleAlert(), 100);
-
-        menuEls.forEach((el, idx) => {
-            el.classList.remove("hidden");
-            if (!menuItems[idx].toLocaleLowerCase().includes(searchVal)) {
-                el.classList.add("hidden");
-            }
-        });
-    };
-
-    useEffect(() => {
-        document.onclick = (e) => {
-            const target = e.target;
-            if (!target.closest(".label-button")) setState(false);
-        };
-    }, []);
-
-    const [university, setUniversity] = useState("");
     const axiosPrivate = useAxiosPrivate();
 
     const {
@@ -107,16 +59,10 @@ const Statistics = () => {
         refetch,
         isRefetching,
     } = useQuery(["stats"], async () => {
-        //  if (userUniversity == undefined) {
-        //      return <></>;
-        //  }
-        // console.log("refetch");
         const response = await axiosPrivate.get(
-            `/statistics/${selectedItem.item}`
+            `/statistics`
         );
-        //  setPages(response.data.totalPages);
-        setMenuItems(response.data.Universities.data);
-        console.log(response.data);
+        // console.log(response.data)
         return response.data;
     });
 
@@ -220,137 +166,7 @@ const Statistics = () => {
             <section className=" ">
                 {/* search input */}
 
-                <div className="flex justify-between items-center pb-5">
-<p className="text-4xl ">Dashboard</p>
-
-<div className="relative max-w-xs rounded-lg   text-base bg-white border-0 border-indigo-600 ">
-                    <div className="label-button flex items-center gap-1 px-2 border rounded-lg shadow-sm">
-                        <svg
-                        
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-6 h-6 text-indigo-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            />
-                        </svg>
-                        <input
-                            type="text"
-                            placeholder="Type to search"
-                            className="w-full px-2 py-2 text-gray-500 bg-transparent rounded-md outline-none"
-                            value={searchFieldVal}
-                            onChange={handleSearch}
-                            onFocus={() => setState(true)}
-                        />
-                        {searchFieldVal ? (
-                            <button
-                                onClick={() => {
-                                    setSearchFieldVal("");
-                                    setSelectedItem({ item: "", idx: null });
-                                    setState(false);
-                                }}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5 text-indigo-400"
-                                >
-                                    <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                </svg>
-                            </button>
-                        ) : (
-                            <button onClick={() => setState(!state)}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    className="w-5 h-5 text-indigo-400"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </button>
-                        )}
-                    </div>
-
-                    {state ? (
-                        <div className="relative w-full">
-                            <ul
-                                ref={listboxRef}
-                                className="absolute w-full mt-3 overflow-y-auto bg-white border rounded-md shadow-sm max-h-64 z-50"
-                                role="listbox"
-                            >
-                                <li
-                                    id="li-alert"
-                                    className="hidden px-3 py-2 text-center text-gray-600"
-                                >
-                                    Not results available
-                                </li>
-                                {menuItems?.map((el, idx) => (
-                                    <li
-                                        key={idx}
-                                        onClick={() => {
-                                            setSelectedItem({
-                                                item: el._id,
-                                                idx,
-                                            });
-                                            setSearchFieldVal(el.name);
-                                        }}
-                                        role="option"
-                                        aria-selected={
-                                            selectedItem.idx == idx
-                                                ? true
-                                                : false
-                                        }
-                                        className={`${
-                                            selectedItem.idx == idx
-                                                ? "text-black bg-indigo-50"
-                                                : ""
-                                        } menu-el-js flex items-center justify-between px-3 py-2 cursor-default duration-150 text-gray-500 hover:text-black hover:bg-indigo-50`}
-                                    >
-                                        {el?.name}
-                                        {selectedItem.idx == idx ? (
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-5 h-5 text-black"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        ) : (
-                                            ""
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ) : (
-                        ""
-                    )}
-
-
-                </div>
-
-
-                    
-                </div>
-                
-
+                <h2 className="text-4xl my-20 mb-5">Dashboard</h2>
 
                 {/* statistics display */}
                 <div className="grid lg:grid-cols-12 gap-5   ">
@@ -404,7 +220,7 @@ const Statistics = () => {
                                 Downloads
                             </p>
                             <p className=" text-4xl font-semibold  text-indigo-700 group-hover:text-white">
-                                {stats?.Universities?.count}
+                                {stats?.Documents?.downloads[0]?.totalDownloads || 0}
                             </p>
                         </div>
                         <div className=" h-20  ">
@@ -423,12 +239,12 @@ const Statistics = () => {
 
                             <div className=" flex gap-5 ">
                                 <p className="text-sm flex  items-center">
-                                    <span class="inline-block w-4 h-4 mr-2 bg-[#475BE8] rounded-full"></span>
+                                    <span className="inline-block w-4 h-4 mr-2 bg-[#475BE8] rounded-full"></span>
                                     By Teachers
                                 </p>
                                 <p className="text-sm flex  items-center">
-                                    <span class="inline-block w-4 h-4 mr-2 bg-[#CFC8FF] rounded-full"></span>
-                                    By Students
+                                    <span className="inline-block w-4 h-4 mr-2 bg-[#CFC8FF] rounded-full"></span>
+                                    By Librarian
                                 </p>
                             </div>
                         </div>
@@ -450,12 +266,12 @@ const Statistics = () => {
                             </p>
                         </div>
                         <div className="flex gap-2 ">
-                            <div className="flex justify-between group px-7 py-3 h-20 bg-white shadow-md hover:shadow-xl hover:bg-indigo-600 border-0 border-indigo-600 hover:border-white transition-all  rounded-lg w-full">
+                            <div className="flex justify-between group px-5 py-3 h-20 bg-white shadow-md hover:shadow-xl hover:bg-indigo-600 border-0 border-indigo-600 hover:border-white transition-all  rounded-lg w-full">
                                 <div>
                                     <p className="text-lg group-hover:text-white transition-all">
                                         Fields
                                     </p>
-                                    <p className="text-2xl text-black group-hover:text-white transition-all">
+                                    <p className="text-xl font-semibold text-indigo-500 group-hover:text-white transition-all">
                                         +{stats?.Fields?.count}
                                     </p>
                                 </div>
@@ -463,12 +279,12 @@ const Statistics = () => {
                                 {/* <p>icon</p> */}
                             </div>
 
-                            <div className="flex justify-between group px-7 py-3 h-20 bg-white shadow-md hover:shadow-xl hover:bg-indigo-600 border-0  border-indigo-600 hover:border-white transition-all rounded-lg w-full">
+                            <div className="flex justify-between group px-5 py-3 h-20 bg-white shadow-md hover:shadow-xl hover:bg-indigo-600 border-0  border-indigo-600 hover:border-white transition-all rounded-lg w-full">
                                 <div className="">
                                     <p className="text-lg group-hover:text-white transition-all">
                                         Branches
                                     </p>
-                                    <p className="text-2xl text-black group-hover:text-white transition-all">
+                                    <p className="text-xl font-semibold text-indigo-500 group-hover:text-white transition-all">
                                         +{stats?.Branches?.count}
                                     </p>
                                 </div>
@@ -477,23 +293,23 @@ const Statistics = () => {
                         </div>
 
                         <div className="flex gap-2">
-                            <div className="flex justify-between px-7 py-3 h-20 bg-white shadow-md hover:shadow-xl group hover:bg-indigo-600 border-0 border-indigo-600 hover:border-white transition-all rounded-lg w-full">
+                            <div className="flex justify-between px-5 py-3 h-20 bg-white shadow-md hover:shadow-xl group hover:bg-indigo-600 border-0 border-indigo-600 hover:border-white transition-all rounded-lg w-full">
                                 <div>
                                     <p className="text-lg group-hover:text-white transition-all">
                                         Specialties
                                     </p>
-                                    <p className="text-2xl text-black group-hover:text-white transition-all">
+                                    <p className="text-xl font-bold text-indigo-500 group-hover:text-white transition-all">
                                         +{stats?.Specialties?.count}
                                     </p>
                                 </div>
                                 {/* <p>icon</p> */}
                             </div>
-                            <div className="flex justify-between px-7 py-3 h-20 bg-white shadow-md  hover:shadow-xl  group hover:bg-indigo-600 transition-all border-0 border-indigo-600 hover:border-white rounded-lg w-full">
+                            <div className="flex justify-between px-5 py-3 h-20 bg-white shadow-md  hover:shadow-xl  group hover:bg-indigo-600 transition-all border-0 border-indigo-600 hover:border-white rounded-lg w-full">
                                 <div>
                                     <p className="text-lg group-hover:text-white transition-all">
                                         Courses
                                     </p>
-                                    <p className="text-2xl text-black  group-hover:text-white transition-all">
+                                    <p className="text-xl font-semibold text-indigo-500  group-hover:text-white transition-all">
                                         +{stats?.Courses?.count}
                                     </p>
                                 </div>

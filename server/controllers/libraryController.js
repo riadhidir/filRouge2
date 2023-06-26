@@ -141,9 +141,12 @@ export const getDocuments = async (req, res) => {
     q && (filter.title = q);
     course || (course = "*");
 
+    let { page = 1 } = req.query;
+
     // console.log(filter)
     try{
-            const rawDocuments = await Document.find(filter)
+
+        const count = await Document.countDocuments(filter)
             .populate({
                 path: 'authors',
                 select: 'f_name l_name'
@@ -159,16 +162,43 @@ export const getDocuments = async (req, res) => {
                     name: course === "*" ? { $exists: true } : course,
                 },
             });
+
+            const totalPages = Math.ceil(count / 10);
+            if (page > totalPages) {
+                page = totalPages;
+            }
+            const rawDocuments = await Document.find(filter)
+            .populate({
+                path: 'authors',
+                select: 'f_name l_name'
+            })
+            .populate({
+                path: 'university',
+                select: 'name'
+            })
+            .populate({
+                path:'course',
+                // select: 'name',
+                match: {
+                    name: course === "*" ? { $exists: true } : course,
+                },
+            }).limit(10).skip(Math.abs((page - 1) * 10));
+
+        
+    
             const filteredDocuments = rawDocuments
             .filter(doc => doc.course !== null)
             // .map(doc => doc._id);
             // console.log(rawDocuments)
-        res.json(filteredDocuments);
+        res.json({documents:filteredDocuments,
+        count, totalPages, currentPage: page});
     }catch(err) {
         console.log(err)
     res.status(500).json({ message: err});
     }
 }
+
+
 export const downloadDocument = async (req,res)=>{
     const docId = req.params.docId;
     try {

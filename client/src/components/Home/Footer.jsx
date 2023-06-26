@@ -29,7 +29,7 @@ export default () => {
     ]
 
     return (
-        <footer className="text-gray-500 bg-white px-4 py-5 max-w-screen-xl mx-auto md:px-8">
+        <footer className="text-gray-500 bg-white px-4 py-5  mx-auto md:px-8 border-t-2 border-indigo-500  "  style={{ background: "linear-gradient(180deg, rgba(192, 132, 252, 0.2) 4.54%, rgba(232, 121, 249, 0.17) 34.2%, rgba(192, 132, 252, 0) 100%  ) " , boxShadow: '1px 1px 50px rgba(0,0,0,0.2)'}}>
             <div className="max-w-lg sm:mx-auto sm:text-center">
                 <img src="/logo.png" className="w-56 sm:mx-auto" />
                 <p className="leading-relaxed mt-2 text-[15px]">

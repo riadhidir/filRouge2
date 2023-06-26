@@ -3,6 +3,10 @@ import User from "../models/User.js";
 import Document from "../models/Documents.js";
 import roles from "../../client/src/config/roles.js";
 import sendEmail from "../utils/email.js";
+import Branch from "../models/Branch.js";
+import Specialty from "../models/Specialty.js";
+import Course from "../models/Course.js";
+import Field from "../models/Field.js";
 export const getUniversity = async (req, res) => {
     const universityID = req.params.universityId;
     try {
@@ -10,6 +14,7 @@ export const getUniversity = async (req, res) => {
             universityID,
             "-specialties -branches -fields"
         ).populate("admin", "f_name l_name email phone");
+
         const teachersCount = await User.countDocuments({
             university: universityID,
             role: roles.TEACHER,
@@ -21,12 +26,21 @@ export const getUniversity = async (req, res) => {
         const documentCount = await Document.countDocuments({
             university: universityID,
         });
+        const fieldCount = await Field.countDocuments({ university: universityID});
+        const branchCount = await Branch.countDocuments({ university: universityID});
+        const specialtyCount = await Specialty.countDocuments({ university: universityID});
+        const courseCount = await Course.countDocuments({ university: universityID});
+
         if (!foundUni) return res.sendStatus(404);
         res.status(200).json({
             university: foundUni,
             teachersCount,
             librariansCount,
             documentCount,
+            fieldCount,
+branchCount,
+specialtyCount,
+courseCount
         });
     } catch (err) {
         res.status(500).json({ message: err.message });

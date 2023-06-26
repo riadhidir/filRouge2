@@ -27,16 +27,16 @@ const useNotification = () => {
     const notify = (state) => {
         switch (state) {
             case 'success':
-              toast.success(<SuccessNotification/>, { position: toast.POSITION.TOP_RIGHT });
+              toast.success(<SuccessNotification/>, { position: toast.POSITION.BOTTOM_RIGHT });
               break;
             case 'error':
-              toast.error(<ErrorNotification/>, { position: toast.POSITION.TOP_RIGHT });
+              toast.error(<ErrorNotification/>, { position: toast.POSITION.BOTTOM_RIGHT });
               break;
             case 'warning':
-              toast.warn('Warning message!', { position: toast.POSITION.TOP_RIGHT });
+              toast.warn('Warning message!', { position: toast.POSITION.BOTTOM_RIGHT });
               break;
             default:
-              toast('Default message!', { position: toast.POSITION.TOP_RIGHT });
+              toast('Default message!', { position: toast.POSITION.BOTTOM_RIGHT });
           }
     }
     

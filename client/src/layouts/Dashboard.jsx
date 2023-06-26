@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBuildingColumns, faUser, faPieChart } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../hooks/useAuth";
 import { ToastContainer } from "react-toastify";
+import Profilepic from "../components/Profilepic";
 // import lottie from 'lottie-web';
 // import { defineElement } from 'lord-icon-element';
 // // define "lord-icon" custom element with default properties
@@ -34,7 +35,7 @@ const navLinks = {
     ],
     dcac: [
         {
-            link: "",
+            link: "/statistics",
             icon:<FontAwesomeIcon icon={faPieChart} />,
             text: "Dashboard",
         },
@@ -135,17 +136,15 @@ const Dashboard = () => {
                                 </svg>
                             </button>
                             <Link
-                                to="https://flowbite.com"
+                                to="/"
                                 className="flex ml-2 md:mr-24"
                             >
                                 <img
-                                    src="https://flowbite.com/docs/images/logo.svg"
-                                    className="h-8 mr-3"
-                                    alt="FlowBite Logo"
+                                    src="/logo.png"
+                                    className="w-52 aspect-auto mr-3"
+                                    alt="learn campus Logo"
                                 />
-                                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                                    Flowbite
-                                </span>
+                             
                             </Link>
                         </div>
                         <div className="flex items-center">
@@ -161,11 +160,8 @@ const Dashboard = () => {
                                         <span className="sr-only">
                                             Open user menu
                                         </span>
-                                        <img
-                                            className="w-8 h-8 rounded-full"
-                                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                            alt="user photo"
-                                        />
+                                       {!isLoading && <Profilepic firstName={data?.user?.f_name} lastName={data?.user?.l_name} className='border-2 border-indigo-500 w-12 h-12 bg-indigo-400 text-white' />}
+                                       
                                     </button>
                                 </div>
                                 <div
@@ -189,16 +185,8 @@ const Dashboard = () => {
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
-                                        <li>
-                                            <Link
-                                                to="/"
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                role="menuitem"
-                                            >
-                                                Dashboard
-                                            </Link>
-                                        </li>
-                                        <li>
+                                       
+                                        {/* <li>
                                             <Link
                                                 to="/"
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -206,8 +194,8 @@ const Dashboard = () => {
                                             >
                                                 Settings
                                             </Link>
-                                        </li>
-                                        <li>
+                                        </li> */}
+                                        {/* <li>
                                             <Link
                                                 to="/"
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -215,7 +203,7 @@ const Dashboard = () => {
                                             >
                                                 Earnings
                                             </Link>
-                                        </li>
+                                        </li> */}
                                         <li>
                                             <button
                                                 onClick={logout}

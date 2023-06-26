@@ -34,7 +34,7 @@ const Filter = ({ title, show = false, setAction , field="", branch="", specialt
     return (
         <div
             id={`${title}-accordion`}
-            className=" px-8 py-7 text-sm font-medium text-gray-900 bg-white/50 border-2 border-white rounded-lg dark:bg-gray-700 dark:border-gray-600 h-fit dark:text-white  "
+            className=" px-8 py-7 text-sm font-medium text-gray-900 bg-white/50 border-2 border-indigo-500 lg:border-white rounded-lg dark:bg-gray-700 dark:border-gray-600 h-fit dark:text-white  "
         >
             <button
                 id={title}
@@ -84,7 +84,7 @@ const Filter = ({ title, show = false, setAction , field="", branch="", specialt
 //    console.log(data)
     data?.map((item,idx)=>{
         return (
-            <div className="flex items-center mb-4 border-b-2 last:border-b-0 pb-2 border-gray-200" key={`${title}-radio-${idx}`}>
+            <div className="flex items-center mb-4 border-b-2 last:border-b-8 pb-2 border-gray-200" key={`${title}-radio-${idx}`}>
                     <input
                    ref={(ref)=> checkRef.length !==0 && (checkRef.current[idx] = ref)}
                     onChange={()=> setAction(item)}

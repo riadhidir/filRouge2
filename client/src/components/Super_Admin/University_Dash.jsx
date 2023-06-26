@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../Pagination.jsx";
 import ActionButtons from "./ActionButtons.jsx";
 import useNotification from "../../hooks/useNotification.jsx";
+import Profilepic from "../Profilepic.jsx";
 
 const states = {
     active: (
@@ -131,6 +132,8 @@ const University_Dash = () => {
             <section className="bg-gray-50 dark:bg-gray-900 ">
                 {/* <ToastContainer /> */}
                 {/*p-3 sm:p-5 */}
+                <h2 className="text-4xl my-20 mb-5">Universities</h2>
+
                 <div className="mx-auto  ">
                     {" "}
                     {/** px-4 lg:px-12*/}
@@ -315,11 +318,7 @@ const University_Dash = () => {
                                         >
                                             Action
                                         </th>
-                                        {/* <th scope="col" className="px-4 py-3">
-                                            <span className="sr-only">
-                                                Actions
-                                            </span>
-                                        </th> */}
+                                     
                                     </tr>
                                 </thead>
 
@@ -384,10 +383,13 @@ const University_Dash = () => {
                                                         </td>
                                                         <td className="px-4 py-3 group">
                                                             <div className="flex items-center gap-x-3">
-                                                                <img
+                                                                {/* <img
                                                                     src="profile-picture-5.jpg"
                                                                     className="w-12 h-12 rounded-full"
-                                                                />
+                                                                /> */}
+                                                                        <Profilepic firstName={item?.admin?.f_name} lastName={item?.admin?.l_name} className='border-2 border-indigo-500 w-12 h-12 bg-indigo-400 text-white' />
+
+
                                                                 <div>
                                                                     <span className="block text-gray-700 text-sm font-medium">
                                                                         {" "}

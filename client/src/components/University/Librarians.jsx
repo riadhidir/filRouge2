@@ -157,7 +157,8 @@ const Librarians = () => {
                 data={updateModal}
             />
             <section className="bg-gray-50 dark:bg-gray-900 ">
-                {" "}
+            <h2 className="text-4xl my-20 mb-5">Dashboard</h2>
+
                 {/*p-3 sm:p-5 */}
                 <div className="mx-auto  ">
                     {" "}

@@ -28,7 +28,7 @@ const _language = [
     { _id: "en", name: "English" },
 ];
 
-const TeacherDocsCreateModal = ({ show, setShow, data, author }) => {
+const TeacherDocsCreateModal = ({ show, setShow, data, author ,refetch}) => {
     const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const university = auth.uni;
@@ -95,7 +95,7 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author }) => {
     useEffect(()=>{
         setBranch("");
         setSpecialty('');
-    },[field]);
+    },[field,cycle]);
  
 
     const uploadMutation = useMutation(
@@ -105,13 +105,13 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author }) => {
         },
         {
             onSuccess: (data) => {
-                // refetch();
+                refetch();
                 // resetInputForm();
-                console.log("success");
+                // console.log("success");
                 // alert("upload success");
                 setModalIndex(1);
 
-                setShow(false);
+                // setShow(false);
             },
             onError: (error) => {
                 console.log(error);
@@ -384,7 +384,7 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author }) => {
                             <div
                                 className={`${
                                     modalIndex == 3 ? "block" : "hidden"
-                                } w-full flex flex-col gap-2 h-96 justify-around   `}
+                                } w-full flex flex-col gap-2 h-fit justify-around   `}
                             >
                                 <div className="">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -561,7 +561,7 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author }) => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 justify-between mt-0  ">
+                            <div className="flex gap-4 mt-5 justify-between   ">
                                 <button
                                     type="button"
                                     onClick={() =>

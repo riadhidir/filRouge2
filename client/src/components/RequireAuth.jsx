@@ -33,6 +33,8 @@ const RequireAuth = ({ allowedRoles }) => {
         allowedRoles?.includes(role) 
         ?
          <Outlet/> 
+     
+
         // <h1>oylet</h1>
       
         : 

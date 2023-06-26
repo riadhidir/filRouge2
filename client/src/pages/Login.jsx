@@ -18,6 +18,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errMsg, setErrMsg] = useState("");
     const [isPasswordHidden, setPasswordHidden] = useState(true);
+
     useEffect(() => {
         setErrMsg("");
     }, [email, password]);
@@ -28,7 +29,7 @@ const Login = () => {
             const {accessToken} = response.data;
             // console.log(response.data);
             setAuth({accessToken});
-            navigate(from, {replace: true});
+            navigate('/redirector', {replace: true});
         },
         onError: (error) => {
             setErrMsg(error.response.data.message);
@@ -43,7 +44,7 @@ const Login = () => {
         // console.log(email, password);
     };
     useEffect(()=>{
-        auth== null && navigate('/');
+        auth == null || navigate('/redirector');
     
     },[auth]);
     return  (
@@ -51,7 +52,7 @@ const Login = () => {
             <div className="max-w-sm w-full text-gray-600">
                 <div className="text-center">
                     <img
-                        src="https://floatui.com/logo.svg"
+                        src="/logo_3.png"
                         width={150}
                         className="mx-auto"
                     />

@@ -195,10 +195,8 @@ export default () => {
                 <div className="flex items-center justify-between py-2 md:py-5 md:flex ">
                     <Link className="" href="javascript:void(0)">
                         <img
-                        className=""
-                            src="logo_2.png"
-                            width={120}
-                            height={100}
+                        className="w-52 aspect-auto"
+                            src="logo.png"
                             alt="Float UI logo"
                         />
                     </Link>

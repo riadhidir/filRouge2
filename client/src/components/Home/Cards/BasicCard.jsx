@@ -33,7 +33,7 @@ const author = ['Td','Tp','Exam'].includes(document.type) ? `/ ${document?.autho
    
     return (
 
-        <div className=" flex bg-white/50  border-[2px]  border-white  rounded-lg p-5  gap-1 flex-col shadow-lg relative group" 
+        <div className=" flex  bg-white  border-[2px]  border-white  rounded-lg p-5  gap-1 flex-col shadow-lg relative group" 
        >
             
             <div className="flex flex-col justify-between w-full gap-4">
