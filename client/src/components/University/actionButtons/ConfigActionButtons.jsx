@@ -9,7 +9,7 @@ import {
     faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from 'react-router-dom';
-const ActionButtons = ({   data , edit ,  toggleState , remove }) => {
+const ActionButtons = ({   data , edit ,  toggleState , remove, selectedItem }) => {
     // console.log(data)
     return (
         <>
@@ -22,7 +22,7 @@ const ActionButtons = ({   data , edit ,  toggleState , remove }) => {
                 </button>
 
                 <button
-                    onClick={() => remove(data._id)}
+                    onClick={() => remove({state:true,selectedItem:selectedItem ,id: data._id})}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 duration-150 bg-indigo-50 rounded-lg hover:bg-indigo-100 active:bg-indigo-200"
                 >
                     <FontAwesomeIcon icon={faTrash} />

@@ -38,7 +38,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
     const [field, setField] = useState("");
     const [branch, setBranch] = useState("");
     const [specialty, setSpecialty] = useState("");
-
+    const [title, setTitle] = useState("");
     const [year, setYear] = useState(0);
     const [language, setLanguage] = useState("");
     const [description, setDescription] = useState("");
@@ -63,7 +63,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
         // setUploadStart(true);
         setModalIndex(1);
 
-        setShow(false);
+        // setShow(false);
         try {
             await toast.promise(async () => {
                 let fileObj, solutionObj;
@@ -81,12 +81,12 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
 
                     description,
                     date: year,
-                    title: "random",
+                    title,
                     university,
                 });
             },{
                 pending: 'Upload is pending',
-                success: 'Upload Successful 👌',
+                success: 'Upload Successful 👌  ',
                 error: 'Upload Error! try again :('
               });
         } catch (err) {
@@ -95,7 +95,6 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
     };
     const uploadMutation = useMutation(
         async (body) => {
-            console.log({ body });
             return await axiosPrivate.put(
                 `/documents/studentDocs/${target.id}`,
                 body
@@ -107,8 +106,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
                 // resetInputForm();
                 setPreviousFileState(false);
 
-                console.log("success");
-                alert("upload success");
+                
                 setModalIndex(1);
                 setShow(false);
             },
@@ -128,7 +126,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
     };
 
     useEffect(() => {
-        console.log(target);
+        // console.log(target);
         setPreviousFileState(false);
         setType(target.type);
 
@@ -145,7 +143,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
         setField(defaultField[0]?.field);
         setCycle(target.cycle);
         setSpecialty(target.specialty);
-
+        setTitle(target.title)
         setLanguage(target.language);
         setYear(target.date);
 
@@ -155,9 +153,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
         // removeSolutionFile();
         // removeSubjectFile();
     }, [show]);
-    useEffect(() => {
-        console.log(type);
-    }, [type]);
+
 
     return (
         <>
@@ -263,6 +259,25 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
                             >
                                 {/* <div className=" flex flex-nowrap gap-2  "> */}
 
+                                <div className="justify-self-end ">
+                                    <label
+                                        htmlFor="title"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Title
+                                    </label>
+
+                                    <input
+                                        onChange={(e) =>
+                                            setTitle(e.target.value)
+                                        }
+                                        value={title}
+                                        id="title"
+                                        className=" block p-2.5 w-full  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write the title of thesis"
+                                        required
+                                    />
+                                </div>
                                 <CustomSelect
                                     title="Year"
                                     options={years}
@@ -291,7 +306,7 @@ const StudentDocsUpdateModal = ({ show, setShow, data, target }) => {
                                         }
                                         value={description}
                                         id="message"
-                                        rows="8"
+                                        rows="4"
                                         className=" block p-2.5 w-full  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Write your thoughts here..."
                                     ></textarea>

@@ -232,14 +232,14 @@ export default ({
                                             // if(item.field == field){
 
                                             // }
-                                            return (
+                                            return item.field == field ? (
                                                 <option
                                                     key={idx}
                                                     value={item._id}
                                                 >
                                                     {item.name}
                                                 </option>
-                                            );
+                                            ): <></>
                                         })}
                                     </select>
                                 </div>

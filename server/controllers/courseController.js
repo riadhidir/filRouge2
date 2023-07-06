@@ -1,13 +1,16 @@
+import mongoose from "mongoose";
 import Branch from "../models/Branch.js";
 import Course from "../models/Course.js";
 import Field from "../models/Field.js";
 import Specialty from "../models/Specialty.js";
 import University from "../models/University.js";
-
+import Document from "../models/Documents.js";
 export const createCourse = async (req, res) => {
-    console.log(req.body    )
     const universityID= req.params.universityId;
-    const { name, cycle, field, branch, specialty } = req.body;
+    let { name, cycle, field, branch , specialty } = req.body;
+    branch = branch || null ;
+    specialty = specialty || null ;
+    // console.log({branch , specialty }   )
     if (!name || !cycle || !field)
         return res.status(400).json({ message: "all fields are required" });
     try {
@@ -93,13 +96,37 @@ export const getCourses = async (req, res) => {
             page = totalPages;
         }
 
-        const courses = await Course.find(filter).sort(sort).limit(10).skip(Math.abs((page - 1) * 10));
+        const courses = await Course.find(filter).sort(sort).limit(10).skip(Math.abs((page - 1) * 10)).lean();
         //filters
         const field = await Field.find({university: universityID}, 'name');
         const branch = await Branch.find({university: universityID}, 'name field');
         const specialty = await Specialty.find({university:universityID},'name branch');
+
+        const docs = await Document.aggregate([
+            {
+                $match : {
+                                university: new  mongoose.Types.ObjectId(universityID),
+                                type: { $in : ['Tp','Td','Exam']}
+                            }
+            },
+            {
+                        $group :{
+                            _id: "$course",
+                         count: { $sum: 1 }
+                        }
+                    }
+
+        ])
+      
+        courses.forEach((course)=>{
+            docs.map((doc)=>{
+                if(doc._id.toString() === course._id.toString() ){
+                    course.subCount = doc.count  
+                } 
+            })
+        });
         res.status(200).json({main: courses, filters:{field, branch,specialty},totalPages,
-            count});
+            count,docs});
         // res.status(200).json(courses);
     } catch (err) {
         res.status(500).json({ message: err.message });

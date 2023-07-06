@@ -19,7 +19,9 @@ import UpdateCourseModal from "./modals/UpdateCourseModal";
 import Lottie from "lottie-web";
 import { defineElement } from "lord-icon-element";
 import Pagination from "../Pagination";
-import useNotification from '../../hooks/useNotification'
+import useNotification from "../../hooks/useNotification";
+import DeleteModal from "./modals/DeleteModal";
+import { usePageTransition } from "../../hooks/usePageTransition";
 const config = {
     fields: {
         add: "Field",
@@ -38,7 +40,7 @@ const filters = {
     fields: [],
     branches: ["field"],
     specialties: ["branch"],
-    courses: ["field","branch","specialty"],
+    courses: ["field", "branch", "specialty"],
 };
 
 const states = {
@@ -76,10 +78,10 @@ const Fields = () => {
     useEffect(() => {
         defineElement(Lottie.loadAnimation);
     }, []);
-    const notify = useNotification()
+    const notify = useNotification();
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
-
+    //   const animationRef = usePageTransition()
     const [state, setState] = useState(0); //query
     const [field, setField] = useState(""); //query
     const [branch, setBranch] = useState(""); //query
@@ -100,7 +102,11 @@ const Fields = () => {
         specialtyID: "",
         cycle: "",
     });
-
+    const [deleteModal, setDeleteModal] = useState({
+        state: false,
+        selectedItem: "",
+        id: "",
+    });
     const tabItems = ["fields", "branches", "specialties", "courses"];
     const [selectedItem, setSelectedItem] = useState(tabItems[0]);
 
@@ -110,11 +116,12 @@ const Fields = () => {
         setBranch("");
         setSpecialty("");
         setState(0);
+        setPage(1);
     }, [selectedItem]);
     const userUniversity = auth?.uni;
 
     //   main data fetch query
-    const { data, isError, error, isLoading, refetch ,isRefetching} = useQuery(
+    const { data, isError, error, isLoading, refetch, isRefetching } = useQuery(
         [selectedItem, userUniversity],
         async () => {
             if (userUniversity == undefined) {
@@ -123,28 +130,9 @@ const Fields = () => {
             const response = await axiosPrivate.get(
                 `/universities/${userUniversity}/${selectedItem}?q=${search}&state=${state}&field=${field}&branch=${branch}&specialty=${specialty}&page=${page}`
             );
-            // console.log(response.data);
+            console.log(response.data);
             setPages(response.data.totalPages);
             return response.data;
-        }
-    );
-
-    // delete query
-    const deleteMutation = useMutation(
-        (id) => {
-            return axiosPrivate.delete(`/${selectedItem}/${id}`);
-        },
-        {
-            onSuccess: () => {
-                refetch();
-                notify('success')
-             
-
-            },
-            onError: (error) => {
-                console.error(error.message); 
-                notify('error')
-            },
         }
     );
 
@@ -158,17 +146,15 @@ const Fields = () => {
         {
             onSuccess: () => {
                 refetch();
-                notify('success')
-               
+                notify("success");
             },
             onError: (error) => {
-                console.error(error.message); notify('error')
+                console.error(error.message);
+                notify("error");
             },
         }
     );
-    const handleDeleter = (id) => {
-        deleteMutation.mutate(id);
-    };
+
     const handleStateToggler = ({ id, state }) => {
         toggleMutation.mutate({ id, state });
     };
@@ -185,7 +171,6 @@ const Fields = () => {
 
     return (
         <>
-        
             {
                 // config[selectedItem].modals[0]
                 selectedItem === "fields" ? (
@@ -258,19 +243,27 @@ const Fields = () => {
                     </>
                 ) : (
                     <></>
-                    )
-                }
+                )
+            }
+
+            <DeleteModal
+                show={deleteModal.state}
+                setShow={setDeleteModal}
+                data={deleteModal}
+                refetch={refetch}
+                // selectedItem= {selectedItem}
+            />
 
             <section className="bg-gray-50 dark:bg-gray-900 ">
-            <h2 className="text-4xl my-20 mb-5">Configuration</h2>
-                
+                <h2 className="text-4xl my-20 mb-5">Configuration</h2>
+
                 <div className="mx-auto   ">
                     <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg ">
-                                    <Tabs
-                                        tabItems={tabItems}
-                                        selectedItem={selectedItem}
-                                        setSelectedItem={setSelectedItem}
-                                    />
+                        <Tabs
+                            tabItems={tabItems}
+                            selectedItem={selectedItem}
+                            setSelectedItem={setSelectedItem}
+                        />
                         <div className="flex flex-col  md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                             <div className="w-full md:w-1/2">
                                 <form onSubmit={handleSearch}>
@@ -310,7 +303,7 @@ const Fields = () => {
                                         />
                                         <button
                                             type="submit"
-                                            className="text-white absolute right-1 bottom-[5px]  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                            className="text-white absolute right-1 bottom-[5px]  bg-indigo-700 hover:bg-indigo-800  focus:outline-none  font-medium rounded-lg text-sm px-4 py-1.5 dark:bg-indigo-600 dark:hover:bg-indigo-700 "
                                         >
                                             Search
                                         </button>
@@ -338,38 +331,35 @@ const Fields = () => {
                                     </svg>
                                     Add {config[selectedItem].add}
                                 </button>
-                                <div className="flex items-center space-x-3 w-full md:w-auto">
-                                </div>
+                                <div className="flex items-center space-x-3 w-full md:w-auto"></div>
                             </div>
                         </div>
                         <div className="px-8 py-2 flex  gap-3 flex-col lg:flex-row lg:gap-14 justify-end">
-                            {
-                                filters[selectedItem]?.map((item, idx) => {
-                                    return (
-                                        <Filter
-                                            key={idx}
-                                            title={item}
-                                            options={data?.filters[item]}
-                                            value=""
-                                            action={
-                                                item === "field"
-                                                    ? setField
-                                                    : item === "branch"
-                                                    ? setBranch
-                                                    : setSpecialty
-                                            }
-                                        />
-                                    );
-                                })}
+                            {filters[selectedItem]?.map((item, idx) => {
+                                return (
+                                    <Filter
+                                        key={idx}
+                                        title={item}
+                                        options={data?.filters[item]}
+                                        value=""
+                                        action={
+                                            item === "field"
+                                                ? setField
+                                                : item === "branch"
+                                                ? setBranch
+                                                : setSpecialty
+                                        }
+                                    />
+                                );
+                            })}
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-3"
-                                        >name</th>
+                                        <th scope="col" className="px-4 py-3">
+                                            name
+                                        </th>
                                         <th scope="col" className="px-4 py-3">
                                             <div className="flex items-center">
                                                 <button
@@ -400,8 +390,11 @@ const Fields = () => {
                                                 </button>
                                             </div>
                                         </th>
-                                        <th scope="col" className="px-4 py-3">
-                                            num of documents
+                                        <th
+                                            scope="col"
+                                            className="px-4 py-3 text-center"
+                                        >
+                                            Total Courses
                                         </th>
                                         <th scope="col" className="px-4 py-3">
                                             action
@@ -447,11 +440,11 @@ const Fields = () => {
                                                 >
                                                     <th
                                                         scope="row"
-                                                        className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                                        className="px-4 py-3 text-lg font-bold text-gray-900 whitespace-nowrap dark:text-white"
                                                     >
                                                         {item?.name}
                                                         {item?.field?.name && (
-                                                            <p>
+                                                            <p className="text-sm text-gray-500 font-medium">
                                                                 {
                                                                     item.field
                                                                         .name
@@ -459,7 +452,7 @@ const Fields = () => {
                                                             </p>
                                                         )}
                                                         {item?.branch?.name && (
-                                                            <p>
+                                                            <p className="text-sm text-gray-500">
                                                                 {
                                                                     item.branch
                                                                         .name
@@ -470,14 +463,17 @@ const Fields = () => {
                                                     <td className="px-4 py-3">
                                                         {states[item?.state]}
                                                     </td>
-                                                    <td className="px-4 py-3">
+                                                    <td className="px-4 py-3 text-center">
                                                         {/* {item?.accounts} */}
-                                                        44
+                                                        {item?.subCount || 0}
                                                     </td>
 
                                                     <td className="px-4 py-3">
                                                         <div className="text-center space-x-7 flex ">
                                                             <ActionButtons
+                                                                selectedItem={
+                                                                    selectedItem
+                                                                }
                                                                 // state={
                                                                 //     item?.state
                                                                 // }
@@ -487,7 +483,8 @@ const Fields = () => {
                                                                     setUpdateModal
                                                                 }
                                                                 remove={
-                                                                    handleDeleter
+                                                                    // handleDeleter
+                                                                    setDeleteModal
                                                                 }
                                                                 toggleState={
                                                                     handleStateToggler
@@ -501,28 +498,30 @@ const Fields = () => {
                                     )}
                                 </tbody>
                             </table>
-                            {!isLoading && !isRefetching && !data?.main?.length && (
-                                <div className=" bg-gray-50 h-16 flex justify-center items-center text-gray-600 border bordert-t-black">
-                                    No data for the moment
-                                </div>  
-                            )}
+                            {!isLoading &&
+                                !isRefetching &&
+                                !data?.main?.length && (
+                                    <div className=" bg-gray-50 h-16 flex justify-center items-center text-gray-600 border bordert-t-black">
+                                        No data for the moment
+                                    </div>
+                                )}
                         </div>
-                            <Pagination
-                                page={page}
-                                pages={pages}
-                                changePage={setPage}
-                            >
-                                <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                    Showing
-                                    <span className="font-semibold text-gray-900 dark:text-white mx-1">
-                                        {data?.main?.length}
-                                    </span>
-                                    of
-                                    <span className="font-semibold text-gray-900 dark:text-white mx-1">
-                                        {data?.count}
-                                    </span>
+                        <Pagination
+                            page={page}
+                            pages={pages}
+                            changePage={setPage}
+                        >
+                            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                Showing
+                                <span className="font-semibold text-gray-900 dark:text-white mx-1">
+                                    {data?.main?.length}
                                 </span>
-                            </Pagination>
+                                of
+                                <span className="font-semibold text-gray-900 dark:text-white mx-1">
+                                    {data?.count}
+                                </span>
+                            </span>
+                        </Pagination>
                     </div>
                 </div>
             </section>

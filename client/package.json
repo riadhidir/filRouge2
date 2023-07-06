@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host ",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -25,6 +25,7 @@
     "firebase": "^9.22.1",
     "flowbite": "^1.6.5",
     "flowbite-react": "^0.4.4",
+    "framer-motion": "^10.12.18",
     "jwt-decode": "^3.1.2",
     "lord-icon-element": "^4.1.1",
     "lottie-web": "^5.11.0",

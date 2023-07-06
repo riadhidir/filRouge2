@@ -67,14 +67,14 @@ export const getDocs = async (req, res) => {
     try {
         const foundDocs = await Document.find(filter);
       
-        const field = await Field.find({ university: universityID }, "name");
+        const field = await Field.find({ university: universityID }, "name state");
         const branch = await Branch.find(
             { university: universityID },
-            "name field"
+            "name field state"
         );
         const specialty = await Specialty.find(
             { university: universityID },
-            "name branch"
+            "name branch state"
         );
         res.status(200).json({
             main: foundDocs,
@@ -154,14 +154,14 @@ export const getMyDocs = async (req, res) => {
         // const teachers = await User.find({ university: universityID });
       
         //filters
-        const field = await Field.find({ university: universityID }, "name");
+        const field = await Field.find({ university: universityID }, "name state");
         const branch = await Branch.find(
             { university: universityID },
-            "name field"
+            "name field state"
         );
         const specialty = await Specialty.find(
             { university: universityID },
-            "name branch"
+            "name branch state"
         );
         res.status(200).json({
             main: foundDocs,

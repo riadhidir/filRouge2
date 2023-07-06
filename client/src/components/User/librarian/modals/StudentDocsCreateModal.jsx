@@ -39,6 +39,7 @@ const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
 
     const [year, setYear] = useState(0);
     const [language, setLanguage] = useState("");
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState("");
     // const [authors, setAuthors] = useState([]);
     const [type, setType] = useState("");
@@ -74,7 +75,7 @@ const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
                     link,
                     description,
                     date: year,
-                    title: "random",
+                    title: title,
                     university,
                 });
             },{
@@ -96,7 +97,6 @@ const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
                 // refetch();
                 // resetInputForm();
                 console.log("success");
-                alert("upload success");
                 setModalIndex(1);
                 refetch()
 
@@ -240,6 +240,25 @@ const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
                                 } w-full flex flex-col gap-2 h-96`}
                             >
                             
+                            <div className="justify-self-end ">
+                                    <label
+                                        htmlFor="title"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Title
+                                    </label>
+
+                                    <input
+                                        onChange={(e) =>
+                                            setTitle(e.target.value)
+                                        }
+                                        value={title}
+                                        id="title"
+                                        className=" block p-2.5 w-full  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write the title of thesis"
+                                        required
+                                    />
+                                </div>
 
                                 <CustomSelect
                                     title="Year"
@@ -269,7 +288,7 @@ const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
                                         }
                                         value={description}
                                         id="message"
-                                        rows="8"
+                                        rows="4"
                                         className=" block p-2.5 w-full  text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Write your thoughts here..."
                                     ></textarea>
@@ -388,6 +407,7 @@ const StudentDocsCreateModal = ({ show, setShow, data, refetch }) => {
                                     disabled={
                                         file.file == null ||
                                         language == "" ||
+                                        title =="" ||
                                         year == "" ||
                                         (cycle == "" && type == "Final") ||
                                         specialty == ""
@@ -448,7 +468,7 @@ const CustomSelect = ({
                 {options?.map((item) => {
                     if (indexData) {
                         return (
-                            item[indexData.name] == indexData.id && (
+                            item[indexData.name] == indexData.id &&  item.state !=='disabled' && (
                                 <option key={item?._id} value={item._id}>
                                     {" "}
                                     {item.name}{" "}
@@ -457,7 +477,7 @@ const CustomSelect = ({
                         );
                     } else {
                         return (
-                            <option key={item?._id} value={item._id}>
+                            item?.state !=='disabled' &&    <option key={item?._id} value={item._id}>
                                 {" "}
                                 {item.name}{" "}
                             </option>

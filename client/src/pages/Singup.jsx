@@ -37,15 +37,19 @@ const Signup = () => {
     useEffect(() => {
         setValidL_name(NAME_REGEX.test(l_name));
     }, [l_name]);
+
     useEffect(() => {
         setValidF_name(NAME_REGEX.test(f_name));
     }, [f_name]);
+
     useEffect(() => {
         setValidEmail(EMAIL_REGEX.test(email));
     }, [email]);
+
     useEffect(() => {
         setValidPhone(PHONE_REGEX.test(phone));
     }, [phone]);
+
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password));
         setValidMatch(password === matchPwd);
@@ -54,6 +58,7 @@ const Signup = () => {
     useEffect(() => {
         setValidUniversity(university.length > 0);
     }, [university]);
+
     useEffect(() => {
         setErrMsg("");
     }, [f_name, university, l_name, email, phone, password, matchPwd]);
@@ -70,6 +75,7 @@ const Signup = () => {
             }
         },
     });
+
     const handleSubmit = (e) => {
         e.preventDefault();
         registerMutation.mutate({
@@ -148,8 +154,8 @@ const Signup = () => {
                             </h3>
                             <p className="">
                                 Already have an account?{" "}
-                                <Link to="/login"
-                                    
+                                <Link
+                                    to="/login"
                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                 >
                                     Log in
@@ -341,7 +347,7 @@ const Signup = () => {
                                         setPhone(e.target.value);
                                     }}
                                     type="tel"
-                                    placeholder="0a1dd7228f2d"
+                                    placeholder="543241353"
                                     required
                                     className="w-full  px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-r-lg"
                                 />

@@ -36,12 +36,21 @@ const specialtySchema = new Schema({
 
 // Create a compound index on attribute1 and attribute2
 specialtySchema.index({ name: 1, university: 1 }, { unique: true });
-specialtySchema.pre('findOneAndDelete', { document: true, query: false }, async function(next){
-    console.log('2')
-    await Course.deleteMany({specialty: this._id });
-    // console.log('gg')
-    next();
-});
+specialtySchema.pre("deleteOne", { document: true }, async function (next) {
+    try {
 
+      const courses = await Course.find({ specialty: this._id })
+      courses.map(async (course) => {
+        try {
+          await course.deleteOne()
+        } catch (error) {
+          return error
+        }
+      })
+      next()
+    } catch (error) {
+      next(error)
+    }
+  })
 const Specialty = model('Specialty', specialtySchema);
 export default Specialty;

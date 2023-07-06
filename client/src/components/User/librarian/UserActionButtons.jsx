@@ -20,7 +20,7 @@ const ActionButtons = ({   data , edit ,  toggleState , remove }) => {
             </Link> */}
             <button
               
-                    onClick={() => edit({state:true, id:data?._id, specialty:data?.specialty, type: data?.type, language:data?.language, date:data?.date, file:data?.link, cycle:data?.cycle, description:data?.description})}
+                    onClick={() => edit({state:true,title:data?.title, id:data?._id, specialty:data?.specialty, type: data?.type, language:data?.language, date:data?.date, file:data?.link, cycle:data?.cycle, description:data?.description})}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm text-indigo-600 duration-150 bg-indigo-50 rounded-lg hover:bg-indigo-100 active:bg-indigo-200"
                 >
                     <FontAwesomeIcon icon={faEdit} />

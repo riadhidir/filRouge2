@@ -136,15 +136,10 @@ const Dashboard = () => {
                                 </svg>
                             </button>
                             <Link
-                                to="/"
-                                className="flex ml-2 md:mr-24"
-                            >
-                                <img
-                                    src="/logo.png"
-                                    className="w-52 aspect-auto mr-3"
-                                    alt="learn campus Logo"
-                                />
-                             
+                            to="/library" className="flex mr-4">
+                           <img src="logo_3.png" className="mr-3 h-8" alt="FlowBite Logo" />
+                           <span className="self-center text-2xl  whitespace-nowrap dark:text-white">LearnCampus</span>
+                         
                             </Link>
                         </div>
                         <div className="flex items-center">
@@ -160,7 +155,7 @@ const Dashboard = () => {
                                         <span className="sr-only">
                                             Open user menu
                                         </span>
-                                       {!isLoading && <Profilepic firstName={data?.user?.f_name} lastName={data?.user?.l_name} className='border-2 border-indigo-500 w-12 h-12 bg-indigo-400 text-white' />}
+                                       {!isLoading && <Profilepic firstName={data?.user?.f_name} lastName={data?.user?.l_name} className='border-2 border-indigo-500 w-10 h-10 bg-indigo-400 text-white' />}
                                        
                                     </button>
                                 </div>
@@ -261,7 +256,7 @@ const Dashboard = () => {
 
             <div className="p-4 sm:ml-64 bg-gray-50">
                 <div className=" border-0  border-dashed rounded-lg  dark:border-gray-700 mt-14 ">
-            <ToastContainer />
+            <ToastContainer autoClose={500} />
                    
                     <Outlet />
 

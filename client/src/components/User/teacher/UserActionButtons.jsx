@@ -11,6 +11,7 @@ import {
 import {Link} from 'react-router-dom';
 const ActionButtons = ({   data , edit ,  toggleState , remove }) => {
     // console.log(data)
+    
     return (
         <div className="flex gap-5 ">
           {/* <Link to={`/users/${data._id}`}

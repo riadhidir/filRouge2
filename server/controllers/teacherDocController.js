@@ -12,7 +12,7 @@ export const createDoc = async (req, res) => {
  
 
     const {
-        title,
+        
         date,
         language,
         type,
@@ -26,6 +26,8 @@ export const createDoc = async (req, res) => {
     } = req.body;
 
     try {
+        const _course = await Course.findById(course);
+        const title = `${_course.name} . ${date}`
         if (type == "Td") {
             await TdDoc.create({
                 title,
@@ -178,17 +180,17 @@ export const getMyDocs = async (req, res) => {
         // const teachers = await User.find({ university: universityID });
         const course = await Course.find(
             { university: universityID },
-            "name cycle field branch specialty"
+            "name cycle field branch specialty state"
         );
         //filters
-        const field = await Field.find({ university: universityID }, "name");
+        const field = await Field.find({ university: universityID }, "name state");
         const branch = await Branch.find(
             { university: universityID },
-            "name field"
+            "name field state"
         );
         const specialty = await Specialty.find(
             { university: universityID },
-            "name branch"
+            "name branch state"
         );
         res.status(200).json({
             main: foundDocs,
@@ -206,8 +208,9 @@ export const getMyDocs = async (req, res) => {
 export const updateDoc = async (req, res) => {
     const docID = req.params.docId;
    
+    console.log(docID)
     const {
-        title,
+     
         date,
         language,
         type,
@@ -224,7 +227,8 @@ export const updateDoc = async (req, res) => {
         const oldDoc = await Document.findByIdAndDelete(docID);
 
         if(!oldDoc) return res.status(404).json({ message:err.message });
-
+        const _course = await Course.findById(course);
+        const title = `${_course.name} . ${date}`
         if (type == "Td") {
             await TdDoc.create({
                 title,
@@ -272,6 +276,7 @@ export const updateDoc = async (req, res) => {
         res.sendStatus(200);
     } catch (err) {
         res.status(500).json({ message: err.message });
+        // console.log(err);
     }
 
 };

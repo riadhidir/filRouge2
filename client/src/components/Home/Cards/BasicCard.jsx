@@ -14,28 +14,26 @@ const BasicCard = ({
     // subject,
     // link,
     // answer
-    document
+    document,
 }) => {
-
-const author = ['Td','Tp','Exam'].includes(document.type) ? `/ ${document?.authors[0]?.l_name[0]}.${document?.authors[0]?.f_name}` : "" ;
+    const author = ["Td", "Tp", "Exam"].includes(document.type)
+        ? `/ ${document?.authors[0]?.l_name[0]}.${document?.authors[0]?.f_name}`
+        : "";
     const downloadMutation = useMutation(downloadDocument, {
         onSuccess: (response) => {
-          console.log("success");
+            console.log("success");
         },
         onError: (error) => {
             setErrMsg(error.response.data.message);
         },
-      });
-      
-      const handleDownload = (id)=>{
-        downloadMutation.mutate(id);
-      }
-   
-    return (
+    });
 
-        <div className=" flex  bg-white  border-[2px]  border-white  rounded-lg p-5  gap-1 flex-col shadow-lg relative group" 
-       >
-            
+    const handleDownload = (id) => {
+        downloadMutation.mutate(id);
+    };
+
+    return (
+        <div className=" flex  bg-white/90  border-[2px]  border-white  rounded-lg p-5  gap-1 flex-col shadow-lg relative group">
             <div className="flex flex-col justify-between w-full gap-4">
                 <h3 className=" flex justify-between text-xl font-medium text-blue-600   capitalize ">
                     {document.title}
@@ -45,8 +43,9 @@ const author = ['Td','Tp','Exam'].includes(document.type) ? `/ ${document?.autho
                     </span>
                 </h3>
 
+                {/* <p>fef</p> */}
                 <div className="flex justify-between items-center">
-                    <p className="capitalize">{`${document.university.name}  ${author }`}</p>
+                    <p className="capitalize">{`${document.university.name}  ${author}`}</p>
 
                     <div className="flex gap-2">
                         <p className="inline-flex items-center px-2 py-1 bg-slate-500 text-xs rounded-lg text-white capitalize ">{`${document.type}`}</p>
@@ -71,21 +70,38 @@ const author = ['Td','Tp','Exam'].includes(document.type) ? `/ ${document?.autho
                     </div>
                 </div>
             </div>
-                <div className="hidden h-full w-full bg-slate-500/50 backdrop-blur-sm absolute top-0 right-0 rounded-lg group-hover:flex place-items-center place-content-center gap-5">
-                {
-                    ['Td','Tp','Exam'].includes(document.type) ? <>
-                        <Link to ={document.subject.url} className="px-3 py-1.5 bg-white rounded-full  " target="_blank"  onClick={()=>handleDownload(document._id)}>subject</Link>
-                        <Link to ={document.answer.url} className="px-3 py-1.5 bg-[#f87171] rounded-full text-white" target="_blank" onClick={()=>handleDownload(document._id)}>answer</Link>
+            <div className="hidden h-full w-full bg-slate-500/50 backdrop-blur-sm absolute top-0 right-0 rounded-lg group-hover:flex place-items-center place-content-center gap-5">
+                {["Td", "Tp", "Exam"].includes(document.type) ? (
+                    <>
+                        <Link
+                            to={document.subject.url}
+                            className="px-3 py-1.5 bg-white rounded-full  "
+                            target="_blank"
+                            onClick={() => handleDownload(document._id)}
+                        >
+                            subject
+                        </Link>
+                        <Link
+                            to={document.answer.url}
+                            className="px-3 py-1.5 bg-[#f87171] rounded-full text-white"
+                            target="_blank"
+                            onClick={() => handleDownload(document._id)}
+                        >
+                            answer
+                        </Link>
                     </>
-                     :                           <Link to ={document.link.url} className="px-3 py-1.5 bg-[#f87171] rounded-full text-white" target="_blank" onClick={()=>handleDownload(document._id)}>preview</Link>
-
-                         
-                    
-                }
-                    
-                </div>
+                ) : (
+                    <Link
+                        to={document.link.url}
+                        className="px-3 py-1.5 bg-[#f87171] rounded-full text-white"
+                        target="_blank"
+                        onClick={() => handleDownload(document._id)}
+                    >
+                        preview
+                    </Link>
+                )}
+            </div>
         </div>
-    
     );
 };
 

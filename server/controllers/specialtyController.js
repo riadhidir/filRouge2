@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import Branch from "../models/Branch.js";
+import Course from "../models/Course.js";
 import Field from "../models/Field.js";
 import Specialty from "../models/Specialty.js";
 
@@ -29,8 +31,9 @@ export const deleteSpecialty = async (req, res) => {
 
     const specialtyID = req.params.specialtyId;
     try {
-        const foundSpecialty = await Specialty.findByIdAndDelete(specialtyID);
+        const foundSpecialty = await Specialty.findById(specialtyID);
         if (!foundSpecialty) return res.sendStatus(404);
+        await foundSpecialty.deleteOne(); 
         res.sendStatus(200);
     } catch (error) {
         res.status(500).json({ message: err.message });
@@ -82,15 +85,38 @@ export const getSpecialties = async (req, res) => {
                  page = totalPages;
              }
      
-        const specialties = await Specialty.find(filter).populate('branch','name').sort(sort).limit(10).skip(Math.abs((page - 1) * 10));;
+        const specialties = await Specialty.find(filter).populate('branch','name').sort(sort).limit(10).skip(Math.abs((page - 1) * 10)).lean();
         //filters
         const field = await Field.find({university: universityID}, 'name ');
         const branch = await Branch.find({university: universityID}, 'name field');
+
+        const courses = await Course.aggregate([
+            {
+                $match : {
+                                university: new  mongoose.Types.ObjectId(universityID)
+                            }
+            },
+            {
+                        $group :{
+                            _id: "$specialty",
+                         count: { $sum: 1 }
+                        }
+                    }
+
+        ])
+        
+        specialties.forEach((specialty)=>{
+            courses.map((course)=>{
+                if( course._id !== null && (course._id.toString() === specialty._id.toString()) ){
+                    specialty.subCount = course.count  
+                } 
+            })
+        });
         res.status(200).json({main: specialties, filters:{field, branch}, totalPages,
             count});
         // res.status(200).json(specialties);
     } catch (error) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: error.message });
     }
 };
 

@@ -98,6 +98,7 @@ export const register = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const login = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password)
@@ -141,6 +142,7 @@ export const login = async (req, res) => {
         console.log(err.message);
     }
 };
+
 export const refreshLogin = async (req, res) => {
     const cookies = req.cookies;
 
@@ -169,6 +171,7 @@ export const refreshLogin = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const logout = async (req, res) => {
     //on client, also delete thee accessToken
     const cookies = req.cookies;
@@ -189,7 +192,6 @@ export const logout = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-
 //generate tokens
 const generateAccessToken = (id, role, uni) => {
     return jwt.sign(
@@ -206,16 +208,19 @@ const generateAccessToken = (id, role, uni) => {
         }
     ); //5-15 min
 };
+
 const generateRefreshToken = (id) => {
     return jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: "1d",
     });
 };
+
 export const generatePasswordResetToken = async () => {
     return jwt.sign({}, process.env.RESET_TOKEN_SECRET, {
         expiresIn: "1h",
     });
 };
+
 export const registerAdmin = async (req, res) => {
     const { f_name, l_name, email, university, password, accounts, phone } =
         req.body;
@@ -270,6 +275,7 @@ export const getAdmins = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const getTeachers = async (req, res) => {
     const filter = { role: roles.TEACHER, university: req.params.universityId };
 
@@ -513,6 +519,7 @@ export const createResetToken = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const resetPassword = async (req, res) => {
     const token = req.query.token;
     const password = req.body.password;

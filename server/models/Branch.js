@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Specialty from "./Specialty.js";
+import Course from "./Course.js";
 const {Schema ,model} = mongoose;
 
 const options= {
@@ -31,5 +33,31 @@ const branchSchema = new Schema({
 },options);
 // Create a compound index on attribute1 and attribute2
 branchSchema.index({ name: 1, university: 1 }, { unique: true });
+
+branchSchema.pre("deleteOne", { document: true }, async function (next) {
+    try {
+
+      const specialties = await Specialty.find({ branch: this._id })
+      specialties.map(async (spc) => {
+        try {
+          await spc.deleteOne()
+        } catch (error) {
+          return error
+        }
+      });
+      
+      const courses = await Course.find({ branch: this._id })
+      courses.map(async (course) => {
+        try {
+          await course.deleteOne()
+        } catch (error) {
+          return error
+        }
+      })
+      next()
+    } catch (error) {
+      next(error)
+    }
+  })
 const Branch = new model('Branch',branchSchema);
 export default Branch;

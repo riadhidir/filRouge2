@@ -136,7 +136,7 @@ export const getCourses = async (req, res) => {
 
 export const getDocuments = async (req, res) => {
     let {type='Exam', course, cycle, q} = req.query;
-    const filter = {type};
+    const filter = {type, state:"active"};
     cycle && (filter.cycle = cycle);
     q && (filter.title = q);
     course || (course = "*");
@@ -186,11 +186,11 @@ export const getDocuments = async (req, res) => {
 
         
     
-            const filteredDocuments = rawDocuments
-            .filter(doc => doc.course !== null)
+            // const filteredDocuments = rawDocuments
+            // .filter(doc => doc.course !== null)
             // .map(doc => doc._id);
             // console.log(rawDocuments)
-        res.json({documents:filteredDocuments,
+        res.json({documents:rawDocuments,
         count, totalPages, currentPage: page});
     }catch(err) {
         console.log(err)

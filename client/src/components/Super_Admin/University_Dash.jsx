@@ -48,6 +48,7 @@ const University_Dash = () => {
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
     const [state, setState] = useState("");
+    
     const {
         data: universities,
         isError,

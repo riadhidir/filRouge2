@@ -29,11 +29,14 @@ const _language = [
     { _id: "en", name: "English" },
 ];
 
-const TeacherDocsUpdateModal = ({ show, setShow, data, author , target}) => {
+const TeacherDocsUpdateModal = ({ show, setShow, data, author , target,refetch}) => {
     const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const university = auth.uni;
  
+    useEffect(()=>{
+        console.log({target});
+    },[show]);
    
     const [cycle, setCycle] = useState("");
     const [field, setField] = useState("");
@@ -69,7 +72,7 @@ const TeacherDocsUpdateModal = ({ show, setShow, data, author , target}) => {
         // setUploadStart(true);
         setModalIndex(1);
 
-        setShow(false);
+        // setShow({...show, state:false});
         try {
             await toast.promise (async () => {
                 let subjectObj,solutionObj;
@@ -99,7 +102,7 @@ const TeacherDocsUpdateModal = ({ show, setShow, data, author , target}) => {
                     authors,
                     description,
                     date: year,
-                    title: "random",
+                    // title: "random",
                     university,
                 });
             },{
@@ -116,17 +119,16 @@ const TeacherDocsUpdateModal = ({ show, setShow, data, author , target}) => {
  
     const uploadMutation = useMutation(
         async (body) => {
-            console.log({ body });
+            console.log({ target});
             return await axiosPrivate.put(`/documents/teacherDocs/${target.id}`, body);
         },
         {
             onSuccess: (data) => {
-                // refetch();
+                refetch();
                 // resetInputForm();
         setPreviousFilesStates({subjectFile:false,solutionFile:false});
 
                 console.log("success");
-                alert("upload success");
                 setModalIndex(1);
                 setShow(false);
             },

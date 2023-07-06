@@ -53,11 +53,11 @@ const Login = () => {
                 <div className="text-center">
                     <img
                         src="/logo_3.png"
-                        width={150}
-                        className="mx-auto"
+                        
+                        className="mx-auto h-24 w-24"
                     />
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">
+                        <h3 className="text-gray-800 text-xl font-bold sm:text-3xl">
                             Log in to your account
                         </h3>
                         <p className="">

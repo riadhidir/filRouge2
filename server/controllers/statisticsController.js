@@ -82,3 +82,27 @@ export const universitiesStats = async(req,res)=>{
         res.status(500).json({message: err.message})
     }
 }
+
+export const homeStats = async(req,res)=>{
+
+try {
+    
+    const docs = await Document.countDocuments();
+    const unis = await University.countDocuments();
+    const downloads_Count = await Document.aggregate([
+           
+             
+       {$group: {
+        _id:  null,
+        totalDownloads: { $sum: '$downloads' },
+      }}
+     
+   ]);
+   res.status(200).json([
+    
+    {data:`${docs}+`,title:'Documents'},{data:unis,title:'Universities'},{data:`${downloads_Count[0].totalDownloads}+`,title:'Downloads'}
+]);
+} catch (error) {
+    res.status(500).json({message: error.message});
+}
+}

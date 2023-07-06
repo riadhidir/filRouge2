@@ -14,7 +14,7 @@ import ActionButtons from "./UserActionButtons";
 
 import Pagination from "../../Pagination";
 
-import AllDocsDeleteModal from "./modals/DeleteDocModal";
+import DocsDeleteModal from "./modals/DeleteDocModal";
 import DeleteAlldocsModal from "./modals/DeleteAllDocsModal";
 import TableLoadSkelton from "../loading/TableLoadSkelton";
 
@@ -158,7 +158,7 @@ function Teacher() {
                     cycle,
                 }}
                 author={user}
-                refetch = {refetch}
+                refetch={refetch}
             />
             <UpdateModal
                 show={updateModal.state}
@@ -174,8 +174,9 @@ function Teacher() {
                 }}
                 target={updateModal}
                 author={user}
+                refetch={refetch}
             />
-            <AllDocsDeleteModal
+            <DocsDeleteModal
                 show={deleteModal.state}
                 setShow={setDeleteModal}
                 data={deleteModal}
@@ -183,7 +184,6 @@ function Teacher() {
             />
 
             <section className="bg-gray-50 dark:bg-gray-900  ">
-                
                 <div className="mx-auto max-w-screen-2xl  ">
                     <div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg ">
                         <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4 ">
@@ -432,8 +432,9 @@ function Teacher() {
                                                             className="w-auto h-8 mr-3"
                                                         />
                                                         <div>
-                                                            <p>{item?.title}</p>
-                                                            <p>dzdzd</p>
+                                                            <p className="">
+                                                                {item?.title}
+                                                            </p>
                                                         </div>
                                                     </th>
                                                     <td className="px-4 py-2">

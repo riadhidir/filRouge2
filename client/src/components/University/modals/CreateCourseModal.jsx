@@ -72,6 +72,10 @@ export default ({ show, setShow, refetch, fields, branches, specialties }) => {
             branch,
         });
     };
+
+    useEffect(()=>{
+        console.log(specialty)
+    },[branch])
     return (
         <>
             {/* <!-- Main modal --> */}
@@ -175,9 +179,7 @@ export default ({ show, setShow, refetch, fields, branches, specialties }) => {
                                         value={field}
                                         onChange={(e) => {
                                             setField(e.target.value);
-                                            setBranch((prev) => {
-                                                return prev 
-                                            });
+                                           
                                         }}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     >
@@ -209,9 +211,6 @@ export default ({ show, setShow, refetch, fields, branches, specialties }) => {
                                         value={branch}
                                         onChange={(e) => {
                                             setBranch(e.target.value);
-                                            setSpecialty((prev) => {
-                                                return { ...prev };
-                                            });
                                         }}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     >

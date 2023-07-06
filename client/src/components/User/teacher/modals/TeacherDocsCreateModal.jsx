@@ -13,8 +13,8 @@ import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useAuth from "../../../../hooks/useAuth";
 import Loader from "../../../Loader";
 import useFileUpload from "../../../../hooks/useFileUpload";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const currentYear = new Date().getFullYear();
 
@@ -28,7 +28,7 @@ const _language = [
     { _id: "en", name: "English" },
 ];
 
-const TeacherDocsCreateModal = ({ show, setShow, data, author ,refetch}) => {
+const TeacherDocsCreateModal = ({ show, setShow, data, author, refetch }) => {
     const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const university = auth.uni;
@@ -62,41 +62,39 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author ,refetch}) => {
         setShow(false);
         // setUploadStart(true);
         try {
-            
-          await toast.promise(
-            async () => {
-                const subjectArray = await uploadFile(subjectFile);
-                const solutionArray = await uploadFile(solutionFile);
-                // console.log({ subjectArray, solutionArray });
-                uploadMutation.mutate({
-                    course,
-                    type,
-                    authors,
-                    cycle,
-                    language,
-                    subject: subjectArray,
-                    answer: solutionArray,
-                    description,
-                    date: year,
-                    title: "random",
-                    university,
-                });
-            },{
-                pending: 'Upload is pending',
-                success: 'Upload Successful 👌',
-                error: 'Upload Error! try again :('
-              }
-            
+            await toast.promise(
+                async () => {
+                    const subjectArray = await uploadFile(subjectFile);
+                    const solutionArray = await uploadFile(solutionFile);
+                    // console.log({ subjectArray, solutionArray });
+                    uploadMutation.mutate({
+                        course,
+                        type,
+                        authors,
+                        cycle,
+                        language,
+                        subject: subjectArray,
+                        answer: solutionArray,
+                        description,
+                        date: year,
+                        // title: formatFileName(year,course),
+                        university,
+                    });
+                },
+                {
+                    pending: "Upload is pending",
+                    success: "Upload Successful 👌",
+                    error: "Upload Error! try again :(",
+                }
             );
         } catch (err) {
             console.error(err);
         }
     };
-    useEffect(()=>{
+    useEffect(() => {
         setBranch("");
-        setSpecialty('');
-    },[field,cycle]);
- 
+        setSpecialty("");
+    }, [field, cycle]);
 
     const uploadMutation = useMutation(
         async (body) => {
@@ -137,6 +135,7 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author ,refetch}) => {
     useEffect(() => {
         // setUploadStart(false);
         removeSolutionFile();
+        console.log(data);
         removeSubjectFile();
     }, [show]);
 
@@ -359,7 +358,6 @@ const TeacherDocsCreateModal = ({ show, setShow, data, author ,refetch}) => {
                                         Value={language}
                                     />
                                 </div>
-                         
 
                                 <div className=" ">
                                     <label
@@ -634,7 +632,8 @@ const CustomSelect = ({ title, options, indexData, setValue, Value }) => {
             {options?.map((item) => {
                 if (indexData) {
                     return (
-                        item[indexData.name] == indexData.id && (
+                        item[indexData.name] == indexData.id &&
+                        item?.state !== "disabled" && (
                             <option key={item?._id} value={item._id}>
                                 {" "}
                                 {item.name}{" "}
@@ -643,10 +642,12 @@ const CustomSelect = ({ title, options, indexData, setValue, Value }) => {
                     );
                 } else {
                     return (
-                        <option key={item?._id} value={item._id}>
-                            {" "}
-                            {item.name}{" "}
-                        </option>
+                        item?.state !== "disabled" && (
+                            <option key={item?._id} value={item._id}>
+                                {" "}
+                                {item.name}{" "}
+                            </option>
+                        )
                     );
                 }
             })}
@@ -663,6 +664,5 @@ const formatFileSize = (bytes) => {
         return bytes + " bytes";
     }
 };
-const formaFileName = () => {};
 
 export default TeacherDocsCreateModal;

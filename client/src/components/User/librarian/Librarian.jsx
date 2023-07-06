@@ -52,6 +52,7 @@ function Teacher() {
     const [createModal, setCreateModal] = useState(false);
     const [updateModal, setUpdateModal] = useState({
         state: false,
+        title:"",
         id: "",
         specialty: "",
         type: "",
@@ -76,6 +77,7 @@ function Teacher() {
     const [_cycle, set_Cycle] = useState("");
     const [_type, set_Type] = useState("");
     const [field, setField] = useState("");
+    
     const [branch, setBranch] = useState("");
     const [specialty, setSpecialty] = useState("");
   
@@ -100,7 +102,6 @@ function Teacher() {
                 `/documents/mystudentDocs?cycle=${_cycle}&type=${_type}&page=${page}&status=${status}&specialty=${specialty}`
             );
             setPages(response.data.totalPages);
-            console.log(response.data);
             return response.data;
         }
     );
@@ -129,6 +130,13 @@ function Teacher() {
     useEffect(() => {
         refetch();
     }, [_cycle, _type, specialty, page,status]);
+
+    useEffect(()=>{
+        setBranch('')
+    },[field])
+    useEffect(()=>{
+        setSpecialty('')
+    },[branch])
     return (
         <>
         
@@ -378,7 +386,6 @@ function Teacher() {
                                                     />
                                                     <div>
                                                         <p>{item?.title}</p>
-                                                        <p>dzdzd</p>
                                                     </div>
                                                 </th>
                                                 <td className="px-4 py-2">

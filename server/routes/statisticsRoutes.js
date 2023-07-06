@@ -1,5 +1,5 @@
 import  express from "express";
-import {universitiesStats } from "../controllers/statisticsController.js";
+import {homeStats, universitiesStats } from "../controllers/statisticsController.js";
 import { verifyJWT } from "../middlewares/verifyJWT.js";
 import verifyRoles from "../middlewares/verifyRoles.js";
 import roles from "../config/roles.js";
@@ -10,8 +10,8 @@ const { ADMIN,STUDENT,TEACHER,LIBRARIAN} = roles;
 
 
 router.get('/', universitiesStats);
+router.get('/home', homeStats);
 router.get('/:universityId', universitiesStats);
-
 
 
 
