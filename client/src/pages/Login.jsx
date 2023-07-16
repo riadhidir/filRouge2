@@ -44,9 +44,11 @@ const Login = () => {
         // console.log(email, password);
     };
     useEffect(()=>{
-        auth == null || navigate('/redirector');
+        console.log({auth})
+        // auth == null || navigate('/redirector');
+        // auth !== null && navigate('/redirector');
     
-    },[auth]);
+    },[]);
     return  (
         <main className="w-full h-screen flex flex-col items-center justify-center px-4">
             <div className="max-w-sm w-full text-gray-600">

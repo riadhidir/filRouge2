@@ -1,4 +1,4 @@
-import { Children } from "react";
+
 
 const Pagination = ({ page, pages, changePage, children }) => {
     let middlePagination;

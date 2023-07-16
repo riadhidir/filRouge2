@@ -32,7 +32,6 @@ function App() {
     const navigate = useNavigate();
     return (
         <Routes>
-            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -42,6 +41,7 @@ function App() {
             <Route path="/redirector" element={<Redirector />} />
             <Route element={<PersistentLogin />}>
 
+                    <Route path="/login" element={<Login />} />
                 <Route element={<RequireAuth allowedRoles={[SUPER_ADMIN]}/>}>
                     <Route path="/" element={<Dashboard />}>
                         <Route path="" element={<Statistics />} />
